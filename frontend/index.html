@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="LibraX Digital Library Management System - Dashboard for university library management">
+  <title>Dashboard | LibraX Digital Library</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="./css/style.css">
+</head>
+<body class="bg-slate-100">
+  <div class="flex min-h-screen">
+
+    <!-- Sidebar -->
+    <aside id="sidebar" class="sidebar bg-slate-900 text-white flex-shrink-0 fixed lg:sticky top-0 h-screen overflow-y-auto z-40">
+      <div class="p-5 border-b border-slate-700">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 bg-indigo-600 rounded-lg flex items-center justify-center">
+            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+            </svg>
+          </div>
+          <div>
+            <h1 class="text-lg font-bold">LibraX</h1>
+            <p class="text-xs text-slate-400">Digital Library</p>
+          </div>
+        </div>
+      </div>
+
+      <nav class="p-4 space-y-1">
+        <a href="./index.html" class="sidebar-link active">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+          Dashboard
+        </a>
+        <a href="./pages/books.html" class="sidebar-link">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+          Books
+        </a>
+        <a href="./pages/members.html" class="sidebar-link">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+          Members
+        </a>
+        <a href="./pages/borrow.html" class="sidebar-link">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg>
+          Borrow & Return
+        </a>
+        <a href="./pages/history.html" class="sidebar-link">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          History
+        </a>
+      </nav>
+    </aside>
+
+    <!-- Sidebar Overlay (Mobile) -->
+    <div id="sidebarOverlay" class="hidden fixed inset-0 bg-black bg-opacity-50 z-30 lg:hidden" onclick="toggleSidebar()"></div>
+
+    <!-- Main Content -->
+    <main class="flex-1 lg:ml-0">
+      <!-- Top Bar -->
+      <header class="bg-white border-b border-slate-200 px-6 py-4 flex items-center justify-between sticky top-0 z-20">
+        <div class="flex items-center gap-4">
+          <button class="lg:hidden p-2 rounded-lg hover:bg-slate-100" onclick="toggleSidebar()">
+            <svg class="w-6 h-6 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+          </button>
+          <h2 class="text-xl font-semibold text-slate-800">Dashboard</h2>
+        </div>
+        <div class="flex items-center gap-3">
+          <span class="text-sm text-slate-500">LibraX Digital Library</span>
+        </div>
+      </header>
+
+      <!-- Dashboard Content -->
+      <div class="p-6">
+        <!-- Stats Cards -->
+        <div id="statsCards" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5 mb-8">
+          <!-- Cards will be rendered by JavaScript -->
+        </div>
+
+        <!-- Recent Borrowings -->
+        <div class="bg-white rounded-xl shadow-sm border border-slate-200">
+          <div class="p-5 border-b border-slate-200 flex items-center justify-between">
+            <h3 class="text-lg font-semibold text-slate-800">Recent Borrowings</h3>
+            <a href="./pages/history.html" class="text-indigo-600 hover:text-indigo-700 text-sm font-medium">View All →</a>
+          </div>
+          <div id="recentBorrowings" class="p-5">
+            <div class="text-center py-8"><div class="spinner mx-auto"></div></div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="./js/app.js"></script>
+  <script>
+    // === Dashboard Page Logic ===
+
+    document.addEventListener('DOMContentLoaded', loadDashboard);
+
+    async function loadDashboard() {
+      const result = await apiGet('/dashboard');
+
+      if (!result.success) {
+        showToast('Failed to load dashboard data', 'error');
+        return;
+      }
+
+      const data = result.data;
+      renderStatsCards(data);
+      renderRecentBorrowings(data.recent_borrowings);
+    }
+
+    function renderStatsCards(data) {
+      const container = document.getElementById('statsCards');
+      const cards = [
+        {
+          title: 'Total Books',
+          value: data.books.total_books || 0,
+          subtitle: `${data.books.total_copies || 0} total copies`,
+          icon: '<svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>',
+          color: 'bg-indigo-50 text-indigo-600'
+        },
+        {
+          title: 'Available Copies',
+          value: data.books.available_copies || 0,
+          subtitle: 'Ready to borrow',
+          icon: '<svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>',
+          color: 'bg-emerald-50 text-emerald-600'
+        },
+        {
+          title: 'Total Members',
+          value: data.total_members || 0,
+          subtitle: 'Registered members',
+          icon: '<svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>',
+          color: 'bg-cyan-50 text-cyan-600'
+        },
+        {
+          title: 'Active Borrowings',
+          value: (data.borrowings.active_borrowings || 0) + (data.borrowings.overdue_borrowings || 0),
+          subtitle: `${data.borrowings.overdue_borrowings || 0} overdue`,
+          icon: '<svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg>',
+          color: 'bg-amber-50 text-amber-600'
+        }
+      ];
+
+      container.innerHTML = cards.map(card => `
+        <div class="stat-card">
+          <div class="flex items-start justify-between">
+            <div>
+              <p class="text-sm text-slate-500 font-medium">${card.title}</p>
+              <p class="text-3xl font-bold text-slate-800 mt-1">${card.value}</p>
+              <p class="text-xs text-slate-400 mt-1">${card.subtitle}</p>
+            </div>
+            <div class="p-3 rounded-xl ${card.color}">
+              ${card.icon}
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function renderRecentBorrowings(borrowings) {
+      const container = document.getElementById('recentBorrowings');
+
+      if (!borrowings || borrowings.length === 0) {
+        container.innerHTML = '<div class="empty-state"><p>No recent borrowings</p></div>';
+        return;
+      }
+
+      container.innerHTML = `
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Member</th>
+              <th>Borrow Date</th>
+              <th>Due Date</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${borrowings.map(b => `
+              <tr>
+                <td class="font-medium">#${b.id}</td>
+                <td>
+                  <div class="font-medium text-slate-700">${b.first_name} ${b.last_name}</div>
+                  <div class="text-xs text-slate-400">${b.member_code}</div>
+                </td>
+                <td>${formatDate(b.borrow_date)}</td>
+                <td>${formatDate(b.due_date)}</td>
+                <td>${getStatusBadge(b.status)}</td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+      `;
+    }
+  </script>
+</body>
+</html>

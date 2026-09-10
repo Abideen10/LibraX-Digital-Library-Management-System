@@ -1,0 +1,17 @@
+{
+  "name": "librax-digital-library",
+  "version": "1.0.0",
+  "description": "LibraX Digital Library Management System - A university library management system built with Node.js, MySQL, and Vanilla JavaScript",
+  "main": "backend/server.js",
+  "scripts": {
+    "start": "node backend/server.js",
+    "dev": "node --watch backend/server.js"
+  },
+  "keywords": ["library", "management", "university", "nodejs", "mysql"],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "mysql2": "^3.9.7"
+  }
+}
