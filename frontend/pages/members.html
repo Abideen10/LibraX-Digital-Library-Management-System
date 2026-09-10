@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="LibraX - Member Management - Manage library members">
   <title>Members | LibraX Digital Library</title>
+  <link rel="icon" type="image/png" href="../assets/images/favicon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -20,14 +21,10 @@
         <!-- Brand Header -->
         <div class="px-2 py-3 mb-2 border-b border-zinc-100">
           <div class="flex items-center gap-2.5">
-            <div class="w-7 h-7 bg-zinc-900 rounded-md flex items-center justify-center text-white">
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
-              </svg>
-            </div>
+            <img src="../assets/images/logo-icon.png" alt="LibraX" class="w-8 h-8 rounded-full object-contain border border-zinc-200/80 bg-white p-0.5 shadow-xs">
             <div>
-              <h1 class="text-xs font-bold text-zinc-900 tracking-tight leading-none">LibraX</h1>
-              <span class="text-[10px] text-zinc-400 font-medium">Digital Library</span>
+              <h1 class="text-sm font-bold text-zinc-900 tracking-tight leading-none">LibraX</h1>
+              <span class="text-xs text-zinc-400 font-medium">Digital Library</span>
             </div>
           </div>
         </div>
@@ -57,7 +54,7 @@
         </nav>
       </div>
 
-      <div class="px-2.5 py-2 rounded-md bg-zinc-50 border border-zinc-150 text-[11px] text-zinc-500">
+      <div class="px-3 py-2 rounded-md bg-zinc-50 border border-zinc-150 text-xs text-zinc-500">
         <span class="font-medium text-zinc-700">Directory Module</span>
       </div>
     </aside>
@@ -66,12 +63,12 @@
 
     <!-- Main Workspace -->
     <main class="flex-1 flex flex-col min-w-0">
-      <header class="bg-white border-b border-zinc-200/80 px-6 h-12 flex items-center justify-between sticky top-0 z-20">
+      <header class="bg-white border-b border-zinc-200/80 px-6 h-[50px] flex items-center justify-between sticky top-0 z-20">
         <div class="flex items-center gap-3">
           <button class="lg:hidden p-1 rounded hover:bg-zinc-100 text-zinc-500" onclick="toggleSidebar()">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
           </button>
-          <h2 class="text-xs font-semibold text-zinc-900 tracking-tight">Members Directory</h2>
+          <h2 class="text-sm font-semibold text-zinc-900 tracking-tight">Members Directory</h2>
         </div>
         <button class="btn btn-primary btn-sm" onclick="openAddMemberModal()">
           <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
