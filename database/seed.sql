@@ -1,92 +1,253 @@
 -- ============================================
 -- LibraX Digital Library Management System
--- Seed Data - ข้อมูลตัวอย่างสำหรับทดสอบ
+-- Large Seed Data (144 Books, 67 Members)
 -- ============================================
 
 USE librax_db;
 
+SET FOREIGN_KEY_CHECKS = 0;
+TRUNCATE TABLE borrowing_items;
+TRUNCATE TABLE borrowings;
+TRUNCATE TABLE members;
+TRUNCATE TABLE books;
+SET FOREIGN_KEY_CHECKS = 1;
+
 -- ============================================
--- Books (10 รายการ - หนังสือที่เหมาะกับมหาวิทยาลัย)
+-- Books (144 รายการ - หนังสือจริงยอดนิยมระดับโลก)
 -- ============================================
 INSERT INTO books (isbn, title, author, category, publisher, published_year, quantity, available_quantity, description) VALUES
-('978-0-13-468599-1', 'Clean Code: A Handbook of Agile Software Craftsmanship', 'Robert C. Martin', 'Computer Science', 'Prentice Hall', 2008, 5, 3, 'A handbook of agile software craftsmanship that teaches developers how to write clean, maintainable code.'),
-('978-0-201-63361-0', 'Design Patterns: Elements of Reusable Object-Oriented Software', 'Erich Gamma, Richard Helm, Ralph Johnson, John Vlissides', 'Computer Science', 'Addison-Wesley', 1994, 3, 2, 'The classic book on software design patterns, written by the "Gang of Four".'),
-('978-0-596-51774-8', 'JavaScript: The Good Parts', 'Douglas Crockford', 'Computer Science', 'O''Reilly Media', 2008, 4, 4, 'A deep dive into the beautiful and elegant parts of the JavaScript programming language.'),
-('978-0-13-235088-4', 'The Pragmatic Programmer', 'David Thomas, Andrew Hunt', 'Computer Science', 'Addison-Wesley', 2019, 3, 1, 'A timeless guide for software developers covering best practices and pragmatic approaches.'),
-('978-0-06-112008-4', 'To Kill a Mockingbird', 'Harper Lee', 'Literature', 'J.B. Lippincott & Co.', 1960, 6, 5, 'A classic novel of racial injustice and childhood innocence in the American South.'),
-('978-0-14-028329-7', '1984', 'George Orwell', 'Literature', 'Secker & Warburg', 1949, 4, 3, 'A dystopian novel set in a totalitarian society ruled by Big Brother.'),
-('978-0-07-340181-2', 'Fundamentals of Database Systems', 'Ramez Elmasri, Shamkant Navathe', 'Computer Science', 'Pearson', 2015, 5, 4, 'A comprehensive introduction to database systems fundamentals and design.'),
-('978-0-13-468129-0', 'Introduction to Algorithms', 'Thomas H. Cormen, Charles E. Leiserson', 'Computer Science', 'MIT Press', 2022, 4, 2, 'The comprehensive textbook on algorithms, widely used in universities worldwide.'),
-('978-0-19-853453-2', 'Principles of Economics', 'N. Gregory Mankiw', 'Economics', 'Cengage Learning', 2020, 5, 5, 'An introductory economics textbook covering both microeconomics and macroeconomics.'),
-('978-0-32-154686-7', 'University Physics with Modern Physics', 'Hugh D. Young, Roger A. Freedman', 'Physics', 'Pearson', 2019, 4, 3, 'A comprehensive physics textbook for university-level courses.');
-
+('978-0-13-235088-4', 'Clean Code: A Handbook of Agile Software Craftsmanship', 'Robert C. Martin', 'Computer Science', 'Prentice Hall', 2008, 8, 6, 'Even bad code can function. But if code isn''t clean, it can bring a development organization to its knees. This book teaches how to tell the difference between good and bad code.'),
+('978-0-201-63361-0', 'Design Patterns: Elements of Reusable Object-Oriented Software', 'Erich Gamma, Richard Helm, Ralph Johnson, John Vlissides', 'Computer Science', 'Addison-Wesley', 1994, 6, 4, 'Capturing a wealth of experience about the design of object-oriented software, four top-notch designers present a catalog of simple and succinct solutions to commonly occurring design problems.'),
+('978-0-13-597444-5', 'The Pragmatic Programmer: Your Journey To Mastery (20th Anniversary Edition)', 'David Thomas, Andrew Hunt', 'Computer Science', 'Addison-Wesley', 2019, 7, 5, 'The Pragmatic Programmer cuts through the increasing specialization and technicalities of modern software development to examine the core process of creating working, maintainable code.'),
+('978-0-13-475759-9', 'Refactoring: Improving the Design of Existing Code', 'Martin Fowler', 'Computer Science', 'Addison-Wesley', 2018, 5, 4, 'Refactoring is about improving the design of existing code. It is the process of changing a software system in such a way that it does not alter the external behavior of the code, yet improves its internal structure.'),
+('978-0-73-561967-8', 'Code Complete: A Practical Handbook of Software Construction', 'Steve McConnell', 'Computer Science', 'Microsoft Press', 2004, 4, 3, 'Widely considered one of the best practical guides to programming, Steve McConnell’s original Code Complete has been helping developers write better software for more than a decade.'),
+('978-1-449-37332-0', 'Designing Data-Intensive Applications', 'Martin Kleppmann', 'Computer Science', 'O''Reilly Media', 2017, 9, 7, 'Data is at the center of many challenges in system design today. Difficult issues need to be figured out, such as scalability, consistency, reliability, efficiency, and maintainability.'),
+('978-0-262-03384-8', 'Introduction to Algorithms (4th Edition)', 'Thomas H. Cormen, Charles E. Leiserson, Ronald L. Rivest, Clifford Stein', 'Computer Science', 'MIT Press', 2022, 10, 8, 'Some books on algorithms are rigorous but incomplete; others cover masses of material but lack rigor. Introduction to Algorithms uniquely combines rigor and comprehensiveness.'),
+('978-0-13-449416-6', 'Clean Architecture: A Craftsman''s Guide to Software Structure and Design', 'Robert C. Martin', 'Computer Science', 'Prentice Hall', 2017, 6, 5, 'Building upon the success of his best-selling books Clean Code and The Clean Coder, legendary software craftsman Robert C. Martin reveals the universal rules of software architecture.'),
+('978-0-321-12521-7', 'Domain-Driven Design: Tackling Complexity in the Heart of Software', 'Eric Evans', 'Computer Science', 'Addison-Wesley', 2003, 4, 3, 'This is not a book about specific technologies. It offers readers a systematic approach to domain-driven design, presenting an extensive set of design-best-practices, experience-based techniques, and fundamental principles.'),
+('978-1-491-95035-7', 'Building Microservices: Designing Fine-Grained Systems', 'Sam Newman', 'Computer Science', 'O''Reilly Media', 2021, 5, 4, 'As organizations shift from monolithic applications to smaller, self-contained microservices, Sam Newman provides a firm grounding in the concepts while diving into modern practices.'),
+('978-0-262-51087-5', 'Structure and Interpretation of Computer Programs', 'Harold Abelson, Gerald Jay Sussman', 'Computer Science', 'MIT Press', 1996, 4, 4, 'A legendary textbook widely known as SICP, emphasizing fundamental concepts of computer programming, modularity, and interpretation.'),
+('978-0-596-51774-8', 'JavaScript: The Good Parts', 'Douglas Crockford', 'Computer Science', 'O''Reilly Media', 2008, 6, 5, 'A deep dive into the beautiful and elegant subset of the JavaScript language, cutting out the problematic features.'),
+('978-1-491-95202-3', 'JavaScript: The Definitive Guide (7th Edition)', 'David Flanagan', 'Computer Science', 'O''Reilly Media', 2020, 5, 4, 'Since 1996, JavaScript: The Definitive Guide has been the bible for JavaScript programmers—a programmer''s guide and a comprehensive reference.'),
+('978-1-593-27950-9', 'Eloquent JavaScript (3rd Edition)', 'Marijn Haverbeke', 'Computer Science', 'No Starch Press', 2018, 6, 5, 'A modern introduction to programming, JavaScript, and browsers, full of code examples and interactive exercises.'),
+('978-1-491-90424-4', 'You Don''t Know JS: Scope & Closures', 'Kyle Simpson', 'Computer Science', 'O''Reilly Media', 2014, 5, 3, 'Dive deep into how the JavaScript engine parses, compiles, and executes your code, focusing on lexical scope and closure.'),
+('978-0-13-468599-2', 'Modern Operating Systems (4th Edition)', 'Andrew S. Tanenbaum, Herbert Bos', 'Computer Science', 'Pearson', 2014, 6, 4, 'Widely praised for its clear explanations of operating systems concepts including processes, threads, memory management, and file systems.'),
+('978-0-13-212695-3', 'Computer Networks (5th Edition)', 'Andrew S. Tanenbaum, David J. Wetherall', 'Computer Science', 'Pearson', 2010, 5, 4, 'The standard university textbook describing network protocols from the physical layer up to the application layer.'),
+('978-0-07-340181-2', 'Fundamentals of Database Systems (7th Edition)', 'Ramez Elmasri, Shamkant Navathe', 'Computer Science', 'Pearson', 2015, 6, 4, 'Clear explanations of database design, relational model, SQL, normalization, concurrency control, and storage management.'),
+('978-0-07-802215-9', 'Database System Concepts (7th Edition)', 'Abraham Silberschatz, Henry F. Korth, S. Sudarshan', 'Computer Science', 'McGraw-Hill Education', 2019, 7, 5, 'Comprehensive foundational book on database management systems, transactions, distributed databases, and query optimization.'),
+('978-0-321-48681-3', 'Compilers: Principles, Techniques, and Tools (Dragon Book)', 'Alfred V. Aho, Monica S. Lam, Ravi Sethi, Jeffrey D. Ullman', 'Computer Science', 'Addison-Wesley', 2006, 4, 3, 'The legendary Dragon Book on compiler design, lexical analysis, syntax-directed translation, and code generation.'),
+('978-0-201-48567-7', 'The Mythical Man-Month: Essays on Software Engineering', 'Frederick P. Brooks Jr.', 'Computer Science', 'Addison-Wesley', 1995, 5, 5, 'Few books on software project management have been as influential and timeless as Brooks''s classic essays on project scheduling and complexity.'),
+('978-0-984-78285-7', 'Cracking the Coding Interview (6th Edition)', 'Gayle Laakmann McDowell', 'Computer Science', 'CareerCup', 2015, 12, 8, '189 programming questions and solutions covering data structures, algorithms, and technical interview strategies.'),
+('978-1-617-29223-1', 'Grokking Algorithms: An Illustrated Guide', 'Aditya Bhargava', 'Computer Science', 'Manning Publications', 2016, 8, 6, 'A fully illustrated, friendly guide that teaches you how to apply common algorithms to practical software problems.'),
+('978-1-593-27992-9', 'Python Crash Course (2nd Edition)', 'Eric Matthes', 'Computer Science', 'No Starch Press', 2019, 8, 6, 'A fast-paced, thorough introduction to programming with Python that will have you writing programs, solving problems, and making things work.'),
+('978-1-492-05635-5', 'Fluent Python: Clear, Concise, and Effective Programming', 'Luciano Ramalho', 'Computer Science', 'O''Reilly Media', 2022, 5, 4, 'Takes you through Python''s core language features and libraries, showing how to make your code shorter, faster, and more readable.'),
+('978-1-718-50044-0', 'The Rust Programming Language', 'Steve Klabnik, Carol Nichols', 'Computer Science', 'No Starch Press', 2019, 6, 5, 'The official book on the Rust programming language written by the Rust core team, exploring memory safety, ownership, and concurrency.'),
+('978-0-13-419044-0', 'The Go Programming Language', 'Alan A. A. Donovan, Brian W. Kernighan', 'Computer Science', 'Addison-Wesley', 2015, 5, 4, 'The authoritative resource for any programmer who wants to learn Go, written by Unix and C legend Brian Kernighan.'),
+('978-0-13-468599-7', 'Effective Java (3rd Edition)', 'Joshua Bloch', 'Computer Science', 'Addison-Wesley', 2018, 5, 4, 'Definitive guide to best practices in the Java programming language from Joshua Bloch, the designer of many Java collection classes.'),
+('978-1-492-07721-3', 'Head First Design Patterns (2nd Edition)', 'Eric Freeman, Elisabeth Robson', 'Computer Science', 'O''Reilly Media', 2020, 7, 5, 'A brain-friendly guide to design patterns that will make software design principles stick in your mind visually and effectively.'),
+('978-1-593-27220-3', 'The Linux Programming Interface', 'Michael Kerrisk', 'Computer Science', 'No Starch Press', 2010, 4, 3, 'The definitive guide to the Linux and UNIX system programming interfaces, covering systems architecture, IPC, signals, and sockets.'),
+('978-0-13-461099-3', 'Artificial Intelligence: A Modern Approach (4th Edition)', 'Stuart Russell, Peter Norvig', 'Artificial Intelligence', 'Pearson', 2020, 8, 6, 'The standard and most celebrated textbook in artificial intelligence, covering search, logic, machine learning, robotics, and ethics.'),
+('978-0-262-03561-3', 'Deep Learning', 'Ian Goodfellow, Yoshua Bengio, Aaron Courville', 'Artificial Intelligence', 'MIT Press', 2016, 6, 4, 'An introduction to a broad range of topics in deep learning, covering mathematical and conceptual background, deep networks, and research perspectives.'),
+('978-1-098-12597-4', 'Hands-On Machine Learning with Scikit-Learn, Keras, and TensorFlow (3rd Edition)', 'Aurélien Géron', 'Artificial Intelligence', 'O''Reilly Media', 2022, 9, 7, 'Through a recent series of breakthroughs, deep learning has boosted the entire field of machine learning. Aurélien shows practical steps to build intelligent systems.'),
+('978-0-387-31073-2', 'Pattern Recognition and Machine Learning', 'Christopher M. Bishop', 'Artificial Intelligence', 'Springer', 2006, 5, 4, 'This is the first textbook on pattern recognition to present the Bayesian viewpoint, widely used in university graduate courses.'),
+('978-0-262-03924-6', 'Reinforcement Learning: An Introduction (2nd Edition)', 'Richard S. Sutton, Andrew G. Barto', 'Artificial Intelligence', 'MIT Press', 2018, 5, 3, 'The key reference text for reinforcement learning, covering Markov decision processes, dynamic programming, temporal-difference learning, and policy gradients.'),
+('978-1-492-03264-9', 'Python for Data Analysis (3rd Edition)', 'Wes McKinney', 'Data Science', 'O''Reilly Media', 2022, 8, 6, 'Written by the creator of Python pandas library, a hands-on guide for manipulating, processing, cleaning, and crunching datasets in Python.'),
+('978-1-999-57950-0', 'The Hundred-Page Machine Learning Book', 'Andriy Burkov', 'Artificial Intelligence', 'Andriy Burkov', 2019, 6, 5, 'A compact and concise masterclass in machine learning fundamentals that covers algorithms, optimization, and practical tips in 100 pages.'),
+('978-1-492-04194-8', 'Speech and Language Processing (3rd Edition Draft)', 'Daniel Jurafsky, James H. Martin', 'Artificial Intelligence', 'Pearson', 2023, 4, 3, 'An authoritative and classic introduction to natural language processing, speech recognition, computational linguistics, and language models.'),
+('978-1-098-13403-7', 'Generative Deep Learning (2nd Edition)', 'David Foster', 'Artificial Intelligence', 'O''Reilly Media', 2023, 5, 4, 'How to use deep learning models like VAEs, GANs, Transformers, and Diffusion models to paint, write, compose, and generate novel content.'),
+('978-1-108-45514-5', 'Mathematics for Machine Learning', 'Marc Peter Deisenroth, A. Aldo Faisal, Cheng Soon Ong', 'Data Science', 'Cambridge University Press', 2020, 6, 5, 'The fundamental mathematical tools needed to understand machine learning: linear algebra, analytic geometry, matrix decompositions, vector calculus, and probability.'),
+('978-0-07-338309-5', 'Discrete Mathematics and Its Applications (8th Edition)', 'Kenneth H. Rosen', 'Mathematics', 'McGraw-Hill Education', 2018, 8, 6, 'A focused introduction to the primary themes in discrete mathematics as well as the necessity for reading and writing mathematical proofs.'),
+('978-0-980-23277-6', 'Introduction to Linear Algebra (5th Edition)', 'Gilbert Strang', 'Mathematics', 'Wellesley-Cambridge Press', 2016, 7, 5, 'Renowned MIT professor Gilbert Strang explains linear algebra with intuition, geometric insight, and real-world applications.'),
+('978-1-285-74062-1', 'Calculus: Early Transcendentals (8th Edition)', 'James Stewart', 'Mathematics', 'Cengage Learning', 2015, 8, 6, 'Success in your calculus course starts here! James Stewart''s Calculus: Early Transcendentals is a worldwide best-seller for its mathematical precision.'),
+('978-0-321-50046-3', 'Probability and Statistics (4th Edition)', 'Morris H. DeGroot, Mark J. Schervish', 'Mathematics', 'Pearson', 2011, 5, 4, 'Presents a balanced approach between classical and Bayesian methods, suitable for science and engineering undergraduates.'),
+('978-0-387-84857-0', 'The Elements of Statistical Learning (2nd Edition)', 'Trevor Hastie, Robert Tibshirani, Jerome Friedman', 'Mathematics', 'Springer', 2009, 6, 4, 'Essential reference in data mining, inference, and prediction from Stanford statistical researchers who pioneered modern machine learning algorithms.'),
+('978-0-321-54686-7', 'University Physics with Modern Physics (15th Edition)', 'Hugh D. Young, Roger A. Freedman', 'Physics', 'Pearson', 2019, 8, 6, 'A benchmark in university physics education, known for its deep conceptual foundation and rigorous real-world problem sets.'),
+('978-0-465-02493-3', 'The Feynman Lectures on Physics (Boxed Set)', 'Richard P. Feynman, Robert B. Leighton, Matthew Sands', 'Physics', 'Basic Books', 2011, 4, 3, 'The legendary lectures given by Nobel laureate Richard Feynman at Caltech, revolutionizing physics instruction with brilliant insights.'),
+('978-0-553-38016-3', 'A Brief History of Time', 'Stephen Hawking', 'Physics', 'Bantam Books', 1988, 7, 6, 'Stephen Hawking explores the origin and nature of the universe, black holes, space and time, and the quest for a theory of everything.'),
+('978-0-393-60939-4', 'Astrophysics for People in a Hurry', 'Neil deGrasse Tyson', 'Physics', 'W. W. Norton & Company', 2017, 6, 5, 'What is the nature of space and time? Neil deGrasse Tyson brings the universe down to Earth succinctly and clearly in mind-expanding chapters.'),
+('978-0-375-70811-4', 'The Elegant Universe: Superstrings, Hidden Dimensions, and the Quest for the Ultimate Theory', 'Brian Greene', 'Physics', 'Vintage', 2000, 5, 4, 'Brian Greene peels back the mystery of string theory to reveal a universe consisting of eleven dimensions where spacetime vibrates.'),
+('978-0-307-88789-4', 'The Lean Startup', 'Eric Ries', 'Business', 'Crown Business', 2011, 9, 7, 'How Today''s Entrepreneurs Use Continuous Innovation to Create Radically Successful Businesses through Build-Measure-Learn cycles.'),
+('978-0-06-662099-2', 'Good to Great: Why Some Companies Make the Leap... and Others Don''t', 'Jim Collins', 'Business', 'HarperBusiness', 2001, 7, 5, 'Management researcher Jim Collins identifies key characteristics of companies that transitioned from good performers to long-term greatness.'),
+('978-0-804-13929-8', 'Zero to One: Notes on Startups, or How to Build the Future', 'Peter Thiel, Blake Masters', 'Business', 'Crown Business', 2014, 8, 6, 'PayPal co-founder Peter Thiel shows that the next Bill Gates will not build an operating system. The next champions will escape competition altogether.'),
+('978-1-422-19602-1', 'The Innovator''s Dilemma', 'Clayton M. Christensen', 'Business', 'Harvard Business Review Press', 1997, 5, 4, 'The revolutionary book that explains why great companies can fail precisely because they do everything right, when disrupted by new market forces.'),
+('978-0-525-53622-2', 'Measure What Matters: How Google, Bono, and the Gates Foundation Rock the World with OKRs', 'John Doerr', 'Business', 'Portfolio', 2018, 6, 5, 'Legendary venture capitalist John Doerr reveals how the goal-setting system of Objectives and Key Results (OKRs) has driven astronomical growth.'),
+('978-0-670-91953-6', 'Thinking in Systems: A Primer', 'Donella H. Meadows', 'Management', 'Chelsea Green Publishing', 2008, 6, 5, 'A concise and crucial book offering insight for problem solving on scales ranging from personal to global through systems theory.'),
+('978-0-307-46374-6', 'Rework', 'Jason Fried, David Heinemeier Hansson', 'Business', 'Currency', 2010, 7, 6, 'The founders of Basecamp show that most business advice about business plans, meetings, and expansion is actually harmful.'),
+('978-1-501-12402-0', 'Principles: Life and Work', 'Ray Dalio', 'Management', 'Simon & Schuster', 2017, 8, 6, 'Ray Dalio, founder of Bridgewater Associates, shares the unconventional principles he developed over forty years to achieve unique results.'),
+('978-1-591-84778-6', 'Hooked: How to Build Habit-Forming Products', 'Nir Eyal', 'Business', 'Portfolio', 2014, 6, 5, 'A guide to how successful tech companies engineer habit-forming products using the 4-step Hook Model: Trigger, Action, Variable Reward, and Investment.'),
+('978-0-679-76288-1', 'High Output Management', 'Andrew S. Grove', 'Management', 'Vintage', 1995, 5, 4, 'Former Intel CEO Andy Grove''s legendary management manual on how to create and maintain peak managerial leverage and operational output.'),
+('978-0-06-227320-8', 'The Hard Thing About Hard Things', 'Ben Horowitz', 'Business', 'HarperBusiness', 2014, 7, 5, 'Ben Horowitz, cofounder of Andreessen Horowitz, draws on his own story of founding and leading companies through brutal crises.'),
+('978-0-735-21129-2', 'Atomic Habits', 'James Clear', 'Self-Help', 'Avery', 2018, 12, 9, 'An easy & proven way to build good habits & break bad ones, drawing on biological, psychological, and neuroscientific research.'),
+('978-0-357-13348-4', 'Principles of Economics (9th Edition)', 'N. Gregory Mankiw', 'Economics', 'Cengage Learning', 2020, 8, 6, 'The premier university economics text, presenting a strong foundation in microeconomics and macroeconomics with clear analytical tools.'),
+('978-0-674-43000-6', 'Capital in the Twenty-First Century', 'Thomas Piketty', 'Economics', 'Belknap Press', 2014, 5, 4, 'A landmark economic work analyzing unique collection of data from 20 countries over three centuries to reveal long-term wealth inequality patterns.'),
+('978-0-06-073132-8', 'Freakonomics: A Rogue Economist Explores the Hidden Side of Everything', 'Steven D. Levitt, Stephen J. Dubner', 'Economics', 'William Morrow', 2005, 8, 6, 'Economics is, at root, the study of incentives. Levitt and Dubner show how economic thinking unlocks bizarre real-world questions.'),
+('978-0-06-055566-5', 'The Intelligent Investor', 'Benjamin Graham', 'Finance', 'Harper Business Essentials', 2003, 7, 5, 'The greatest investment advisor of the twentieth century, Benjamin Graham taught and inspired people worldwide on value investing.'),
+('978-0-857-19768-9', 'The Psychology of Money', 'Morgan Housel', 'Finance', 'Harriman House', 2020, 10, 7, 'Timeless lessons on wealth, greed, and happiness doing well with money isn’t necessarily about what you know. It’s about how you behave.'),
+('978-0-465-06073-3', 'Basic Economics (5th Edition)', 'Thomas Sowell', 'Economics', 'Basic Books', 2014, 6, 5, 'A citizen''s guide to economics for those who want to understand how the economy works but have no interest in jargon or equations.'),
+('978-0-14-311526-7', 'Nudge: Improving Decisions About Health, Wealth, and Happiness', 'Richard H. Thaler, Cass R. Sunstein', 'Economics', 'Penguin Books', 2009, 6, 5, 'Nobel Prize winner Richard Thaler reveals how behavioral economics and choice architecture can nudge people toward better decisions.'),
+('978-0-393-33764-8', 'The Black Swan: The Impact of the Highly Improbable', 'Nassim Nicholas Taleb', 'Economics', 'Random House', 2007, 5, 4, 'A black swan is an event that is an extreme outlier, has an immense impact, and is rationalized by hindsight bias.'),
+('978-0-06-112008-4', 'To Kill a Mockingbird', 'Harper Lee', 'Literature', 'J.B. Lippincott & Co.', 1960, 8, 6, 'A classic novel of racial injustice and childhood innocence in the American South, viewed through the eyes of young Scout Finch.'),
+('978-0-14-028329-7', '1984', 'George Orwell', 'Literature', 'Secker & Warburg', 1949, 9, 7, 'A chilling dystopian novel set in a totalitarian superstate ruled by the Party and the ever-watching figure of Big Brother.'),
+('978-0-743-27356-5', 'The Great Gatsby', 'F. Scott Fitzgerald', 'Literature', 'Charles Scribner''s Sons', 1925, 7, 5, 'The story of the fabulously wealthy Jay Gatsby and his passionate obsession with the beautiful Daisy Buchanan during the Jazz Age.'),
+('978-0-14-143951-8', 'Pride and Prejudice', 'Jane Austen', 'Literature', 'T. Egerton', 1813, 6, 5, 'A witty romantic masterwork following Elizabeth Bennet as she navigates issues of manners, upbringing, morality, and marriage.'),
+('978-0-14-044913-6', 'Crime and Punishment', 'Fyodor Dostoevsky', 'Literature', 'The Russian Messenger', 1866, 5, 4, 'A psychological masterpiece examining the mental anguish and moral dilemmas of an impoverished ex-student in Saint Petersburg who murders a pawnbroker.'),
+('978-0-316-76948-0', 'The Catcher in the Rye', 'J.D. Salinger', 'Literature', 'Little, Brown and Company', 1951, 6, 5, 'The quintessential novel of adolescent rebellion, alienation, and identity, told through the raw voice of Holden Caulfield.'),
+('978-0-06-085052-4', 'Brave New World', 'Aldous Huxley', 'Literature', 'Chatto & Windus', 1932, 6, 4, 'A prophetic masterpiece envisioning a futuristic World State where citizens are genetically engineered, conditioned, and anesthetized.'),
+('978-0-547-92822-7', 'The Hobbit', 'J.R.R. Tolkien', 'Literature', 'George Allen & Unwin', 1937, 8, 6, 'Bilbo Baggins is a hobbit who enjoys a comfortable, unambitious life, until the wizard Gandalf and a company of thirteen dwarves arrive.'),
+('978-0-618-64015-7', 'The Fellowship of the Ring', 'J.R.R. Tolkien', 'Literature', 'George Allen & Unwin', 1954, 7, 5, 'The first volume in The Lord of the Rings trilogy, beginning Frodo Baggins'' perilous journey to destroy the One Ring in the fires of Mount Doom.'),
+('978-0-06-088328-7', 'One Hundred Years of Solitude', 'Gabriel García Márquez', 'Literature', 'Harper & Row', 1967, 5, 4, 'A pinnacle of magical realism telling the multi-generational story of the Buendía family whose patriarch founds the mythical Colombian town of Macondo.'),
+('978-0-451-52634-2', 'Animal Farm', 'George Orwell', 'Literature', 'Secker and Warburg', 1945, 8, 7, 'A brilliant political satire allegorizing the Russian Revolution through farm animals who rebel against their human farmer.'),
+('978-1-451-67331-9', 'Fahrenheit 451', 'Ray Bradbury', 'Literature', 'Ballantine Books', 1953, 6, 5, 'Guy Montag is a fireman whose job is to burn books in a future American society where television rules and literature is on the brink of extinction.'),
+('978-0-15-601219-5', 'The Little Prince', 'Antoine de Saint-Exupéry', 'Literature', 'Reynal & Hitchcock', 1943, 10, 8, 'A timeless poetic tale of a young prince who visits various planets in space, addressing themes of loneliness, friendship, love, and loss.'),
+('978-0-06-231609-7', 'Sapiens: A Brief History of Humankind', 'Yuval Noah Harari', 'History', 'Harper', 2014, 12, 9, 'Yuval Noah Harari explores how an insignificant ape became the ruler of planet Earth, capable of splitting the atom and journeying to the moon.'),
+('978-0-06-246431-6', 'Homo Deus: A Brief History of Tomorrow', 'Yuval Noah Harari', 'History', 'Harper', 2016, 8, 6, 'Harari turns his gaze toward our future, exploring the dreams, projects, and nightmares that will shape humanity in the twenty-first century.'),
+('978-0-807-01429-5', 'Man''s Search for Meaning', 'Viktor E. Frankl', 'Philosophy', 'Beacon Press', 1946, 7, 5, 'Psychiatrist Viktor Frankl chronicles his experiences as an Auschwitz concentration camp inmate and describes his psychotherapeutic method of logotherapy.'),
+('978-0-14-044949-5', 'Meditations', 'Marcus Aurelius', 'Philosophy', 'Penguin Classics', 2006, 8, 6, 'Private reflections by the Roman Emperor Marcus Aurelius, offering enduring wisdom on Stoic philosophy, resilience, and ethical leadership.'),
+('978-0-14-044927-3', 'The Republic', 'Plato', 'Philosophy', 'Penguin Classics', 2003, 5, 4, 'Plato''s celebrated dialogue concerning justice, the order and character of the just city-state, and the nature of the philosopher king.'),
+('978-0-374-53355-7', 'Thinking, Fast and Slow', 'Daniel Kahneman', 'Psychology', 'Farrar, Straus and Giroux', 2011, 9, 7, 'Nobel laureate Daniel Kahneman takes us on a groundbreaking tour of the mind and explains the two systems that drive the way we think: System 1 and System 2.'),
+('978-0-06-124189-5', 'Influence: The Psychology of Persuasion', 'Robert B. Cialdini', 'Psychology', 'Harper Business', 2006, 8, 6, 'The foundational book on persuasion, explaining the 6 universal psychological principles that cause humans to say yes.'),
+('978-0-06-133920-2', 'Flow: The Psychology of Optimal Experience', 'Mihaly Csikszentmihalyi', 'Psychology', 'Harper Perennial', 1990, 6, 5, 'Csikszentmihalyi''s classic investigation of optimal human experience reveals that what makes an experience genuinely satisfying is the state of flow.'),
+('978-0-307-35215-6', 'Quiet: The Power of Introverts in a World That Can''t Stop Talking', 'Susan Cain', 'Psychology', 'Crown', 2012, 7, 6, 'Susan Cain argues that we dramatically undervalue introverts and shows how much we lose in doing so in business, school, and culture.'),
+('978-1-501-11110-5', 'Grit: The Power of Passion and Perseverance', 'Angela Duckworth', 'Psychology', 'Scribner', 2016, 7, 5, 'Pioneering psychologist Angela Duckworth shows parents, students, educators, and athletes that the secret to outstanding achievement is grit.'),
+('978-0-812-98160-5', 'The Power of Habit: Why We Do What We Do in Life and Business', 'Charles Duhigg', 'Psychology', 'Random House', 2012, 8, 6, 'Award-winning reporter Charles Duhigg takes us to the thrilling edge of scientific discoveries that explain why habits exist and how they can be changed.'),
+('978-0-465-05065-9', 'The Design of Everyday Things', 'Don Norman', 'Design', 'Basic Books', 2013, 7, 5, 'Even the smartest among us can feel inept as we fail to figure out whether to push or pull an unfamiliar door. The ultimate bible of cognitive design and usability.'),
+('978-0-321-96551-6', 'Don''t Make Me Think, Revisited: A Common Sense Approach to Web Usability', 'Steve Krug', 'Design', 'New Riders', 2014, 8, 6, 'Since Don''t Make Me Think was first published in 2000, hundreds of thousands of web designers and developers have relied on Steve Krug''s guide.'),
+('978-1-592-53587-3', 'Universal Principles of Design', 'William Lidwell, Kritina Holden, Jill Butler', 'Design', 'Rockport Publishers', 2010, 5, 4, 'A comprehensive, cross-disciplinary encyclopedia of 125 design concepts from affordances to the golden ratio and Ockham''s razor.'),
+('978-0-321-70253-1', '100 Things Every Designer Needs to Know About People', 'Susan Weinschenk', 'Design', 'New Riders', 2011, 6, 5, 'Combine real science and research with practical examples to deliver a guide every designer needs to make intuitive, impactful products.'),
+('978-0-997-59422-5', 'Refactoring UI', 'Adam Wathan, Steve Schoger', 'Design', 'Refactoring UI', 2018, 6, 5, 'Learn how to design beautiful user interfaces yourself using specific tactics and rules of thumb, written for developers by the makers of Tailwind CSS.'),
+('978-0-679-72020-1', 'The Stranger', 'Albert Camus', 'Literature', 'Vintage', 1942, 6, 5, 'Through the story of an ordinary man unwittingly drawn into a senseless murder on an Algerian beach, Camus explored alienation and the Absurd.'),
+('978-0-14-044794-1', 'The Prince', 'Niccolò Machiavelli', 'Philosophy', 'Penguin Classics', 2003, 7, 6, 'A seminal treaty on political power, statecraft, and realpolitik written by Italian Renaissance diplomat Niccolò Machiavelli.'),
+('978-0-06-256088-0', 'The Alchemist', 'Paulo Coelho', 'Literature', 'HarperOne', 1988, 10, 8, 'A magical story of an Andalusian shepherd boy named Santiago who yearns to travel in search of a worldly treasure as extravagant as any found.'),
+('978-0-14-118280-3', 'The Metamorphosis', 'Franz Kafka', 'Literature', 'Penguin Books', 1915, 6, 5, 'Gregor Samsa wakes one morning from uneasy dreams to find himself transformed in his bed into a gigantic insect.'),
+('978-0-14-044926-6', 'The Art of War', 'Sun Tzu', 'History', 'Penguin Classics', 2009, 8, 7, 'An ancient Chinese military treatise dating from the Late Spring and Autumn Period, influential across military, management, and strategic disciplines.'),
+('978-0-394-80001-1', 'The Cat in the Hat', 'Dr. Seuss', 'Literature', 'Random House', 1957, 6, 6, 'A timeless children''s book illustrating the joys of reading through rhythm and rhyme.'),
+('978-0-452-28423-4', 'Frankenstein', 'Mary Shelley', 'Literature', 'Lackington, Hughes, Harding, Mavor, & Jones', 1818, 6, 5, 'The classic gothic thriller recounting Victor Frankenstein''s tragic creation of a sapient, monstrous creature.'),
+('978-0-14-044917-4', 'War and Peace', 'Leo Tolstoy', 'Literature', 'The Russian Messenger', 1869, 4, 3, 'Epic literary masterpiece delineating the French invasion of Russia and the impact of the Napoleonic era on Tsarist society.'),
+('978-0-14-044918-1', 'Anna Karenina', 'Leo Tolstoy', 'Literature', 'The Russian Messenger', 1877, 5, 4, 'Tolstoy''s poignant tragedy of married aristocrat Anna Karenina and her scandalous affair with the affluent Count Vronsky.'),
+('978-0-14-044933-4', 'The Brothers Karamazov', 'Fyodor Dostoevsky', 'Literature', 'The Russian Messenger', 1880, 5, 4, 'A passionate philosophical novel that enters deeply into the ethical debates of God, free will, and morality in 19th-century Russia.'),
+('978-0-14-243723-0', 'Don Quixote', 'Miguel de Cervantes', 'Literature', 'Francisco de Robles', 1605, 5, 4, 'Widely regarded as the first modern novel, following the adventures of Alonso Quixano who imagines himself a valiant knight errant.'),
+('978-0-14-044924-2', 'The Odyssey', 'Homer', 'Literature', 'Penguin Classics', 2003, 6, 5, 'The ancient Greek epic poem telling the journey of Odysseus, King of Ithaca, as he strives to return home after the Trojan War.'),
+('978-0-14-027536-0', 'The Iliad', 'Homer', 'Literature', 'Penguin Classics', 1998, 6, 5, 'Set during the Trojan War, the ten-year siege of the city of Troy by a coalition of Greek kingdoms.'),
+('978-0-14-044118-5', 'The Divine Comedy', 'Dante Alighieri', 'Literature', 'Penguin Classics', 2003, 5, 4, 'Dante''s vision of the afterlife, describing his travels through Inferno, Purgatorio, and Paradiso.'),
+('978-0-14-044793-4', 'Hamlet', 'William Shakespeare', 'Literature', 'Penguin Classics', 2005, 7, 6, 'Shakespeare''s tragedy set in Denmark, depicting Prince Hamlet and his revenge against his uncle, Claudius.'),
+('978-0-14-044795-8', 'Macbeth', 'William Shakespeare', 'Literature', 'Penguin Classics', 2005, 6, 5, 'A Scottish general named Macbeth receives a prophecy from a trio of witches that one day he will become King of Scotland.'),
+('978-0-14-044792-7', 'Romeo and Juliet', 'William Shakespeare', 'Literature', 'Penguin Classics', 2005, 7, 6, 'The tragic love story between two young Italian star-crossed lovers whose deaths ultimately reconcile their feuding families.'),
+('978-0-679-73477-2', 'Beloved', 'Toni Morrison', 'Literature', 'Alfred A. Knopf', 1987, 6, 5, 'Pulitzer Prize-winning novel inspired by the real life story of Margaret Garner, an African American who escaped slavery in Kentucky.'),
+('978-0-14-018639-0', 'Of Mice and Men', 'John Steinbeck', 'Literature', 'Covici Friede', 1937, 7, 6, 'A novella narrating the experiences of George Milton and Lennie Small, two displaced migrant ranch workers during the Great Depression.'),
+('978-0-14-018640-6', 'The Grapes of Wrath', 'John Steinbeck', 'Literature', 'The Viking Press', 1939, 6, 5, 'Follows the Joads, a poor family of tenant farmers driven from their Oklahoma home by drought, economic hardship, and changes in financial industry.'),
+('978-0-684-80122-3', 'The Old Man and the Sea', 'Ernest Hemingway', 'Literature', 'Charles Scribner''s Sons', 1952, 8, 7, 'Tells the story of Santiago, an aging Cuban fisherman who struggles with a giant marlin far out in the Gulf Stream.'),
+('978-0-684-80146-9', 'A Farewell to Arms', 'Ernest Hemingway', 'Literature', 'Charles Scribner''s Sons', 1929, 5, 4, 'Set during the Italian campaign of World War I, first-person account of an American, Frederic Henry, serving as an ambulance driver.'),
+('978-0-06-093546-7', 'Their Eyes Were Watching God', 'Zora Neale Hurston', 'Literature', 'J.B. Lippincott & Co.', 1937, 6, 5, 'Follows the life and romantic journey of Janie Crawford, an African-American woman in Florida in the early 20th century.'),
+('978-0-14-044784-2', 'Wuthering Heights', 'Emily Brontë', 'Literature', 'Thomas Cautley Newby', 1847, 6, 5, 'A tempestuous tale of intense, almost demonic love between Catherine Earnshaw and Heathcliff on the desolate Yorkshire moors.'),
+('978-0-14-144114-6', 'Jane Eyre', 'Charlotte Brontë', 'Literature', 'Smith, Elder & Co.', 1847, 6, 5, 'Follows the experiences of its eponymous heroine, including her growth to adulthood and her love for Mr. Rochester at Thornfield Hall.'),
+('978-0-14-043072-1', 'Great Expectations', 'Charles Dickens', 'Literature', 'Chapman & Hall', 1861, 6, 5, 'Depicts the education of an orphan nicknamed Pip, tracing his personal development and unexpected fortune from an anonymous benefactor.'),
+('978-0-14-143960-0', 'A Tale of Two Cities', 'Charles Dickens', 'Literature', 'Chapman & Hall', 1859, 6, 5, 'Set in London and Paris before and during the French Revolution, depicting the plight of the French peasantry and reign of terror.'),
+('978-0-14-243724-7', 'Moby-Dick', 'Herman Melville', 'Literature', 'Harper & Brothers', 1851, 5, 4, 'The sailor Ishmael narrates the obsessive quest of Ahab, captain of the whaling ship Pequod, for revenge against the giant white sperm whale Moby Dick.'),
+('978-0-14-044915-0', 'The Count of Monte Cristo', 'Alexandre Dumas', 'Literature', 'Pétion', 1844, 7, 5, 'A young sailor Edmond Dantès is falsely accused of treason and imprisoned in the Château d''If, escaping years later to exact elaborate vengeance.'),
+('978-0-14-044919-8', 'The Three Musketeers', 'Alexandre Dumas', 'Literature', 'Baudry', 1844, 6, 5, 'Recounts the adventures of a young man named d''Artagnan after he leaves home to travel to Paris, joining the Musketeers of the Guard.'),
+('978-0-14-044430-8', 'Les Misérables', 'Victor Hugo', 'Literature', 'A. Lacroix, Verboeckhoven & Cie.', 1862, 6, 5, 'Beginning in 1815 and culminating in the 1832 June Rebellion in Paris, following the struggles of ex-convict Jean Valjean and his quest for redemption.'),
+('978-0-14-044353-0', 'The Hunchback of Notre-Dame', 'Victor Hugo', 'Literature', 'Gosselin', 1831, 5, 4, 'A French Gothic novel set in 1482 in Paris centered around Quasimodo, the deformed bell-ringer of the cathedral of Notre-Dame.'),
+('978-0-14-044914-3', 'Madame Bovary', 'Gustave Flaubert', 'Literature', 'Revue de Paris', 1856, 5, 4, 'Focuses on Emma Bovary, the wife of a country doctor, who engages in extramarital affairs and lives beyond her means to escape banality.'),
+('978-0-14-243720-9', 'Heart of Darkness', 'Joseph Conrad', 'Literature', 'Blackwood''s Magazine', 1899, 6, 5, 'A novella about a narrated voyage up the Congo River into the Congo Free State in the heart of Africa through the eyes of Charles Marlow.'),
+('978-0-14-044947-1', 'The Picture of Dorian Gray', 'Oscar Wilde', 'Literature', 'Lippincott''s Monthly Magazine', 1890, 7, 6, 'A philosophical novel about a portrait that ages and bears the sins of a young man, Dorian Gray, while he maintains his youthful beauty.'),
+('978-0-14-143984-6', 'Dracula', 'Bram Stoker', 'Literature', 'Archibald Constable and Company', 1897, 6, 5, 'An epistolary novel telling the story of Count Dracula''s attempt to relocate from Transylvania to England so that he may find new blood.'),
+('978-0-14-043773-7', 'The Strange Case of Dr Jekyll and Mr Hyde', 'Robert Louis Stevenson', 'Literature', 'Longmans, Green & Co.', 1886, 6, 5, 'A London legal practitioner investigates strange occurrences between his old friend, Dr Henry Jekyll, and the evil Edward Hyde.'),
+('978-0-14-043009-7', 'Alice''s Adventures in Wonderland', 'Lewis Carroll', 'Literature', 'Macmillan', 1865, 8, 7, 'A young girl named Alice falls through a rabbit hole into a fantasy world populated by peculiar, anthropomorphic creatures.'),
+('978-0-14-043907-6', 'The Adventures of Sherlock Holmes', 'Arthur Conan Doyle', 'Literature', 'George Newnes', 1892, 8, 6, 'A collection of twelve short stories featuring consulting detective Sherlock Holmes and his companion Dr. John H. Watson.'),
+('978-0-14-043908-3', 'The Hound of the Baskervilles', 'Arthur Conan Doyle', 'Literature', 'George Newnes', 1902, 6, 5, 'Sherlock Holmes and Dr. Watson investigate the legend of a supernatural, diabolical hound haunting Dartmoor in Devon.'),
+('978-0-14-044760-6', 'Slaughterhouse-Five', 'Kurt Vonnegut', 'Literature', 'Delacorte', 1969, 6, 5, 'An anti-war novel centering on the World War II experiences and journeys through time of an American soldier named Billy Pilgrim.'),
+('978-0-14-018859-2', 'Catch-22', 'Joseph Heller', 'Literature', 'Simon & Schuster', 1961, 6, 5, 'A satirical war novel set during World War II, popularizing the term Catch-22 for a paradoxical, inescapable problem.'),
+('978-0-14-028333-4', 'Lord of the Flies', 'William Golding', 'Literature', 'Faber and Faber', 1954, 8, 6, 'A group of British boys stranded on an uninhabited island descend into savagery and struggle disastrously to govern themselves.'),
+('978-0-14-004245-0', 'On the Road', 'Jack Kerouac', 'Literature', 'Viking Press', 1957, 5, 4, 'Based on the travels of Kerouac and his friends across the United States against a backdrop of jazz, poetry, and drugs.'),
+('978-0-394-71643-5', 'Zen and the Art of Motorcycle Maintenance', 'Robert M. Pirsig', 'Philosophy', 'William Morrow & Company', 1974, 6, 5, 'A father and son''s motorcycle trip across the Northwest United States becomes an insightful philosophical inquiry into metaphysics and Quality.');
 
 -- ============================================
--- Members (8 คน - นักศึกษา, อาจารย์, เจ้าหน้าที่)
+-- Members (67 คน - นักศึกษา, อาจารย์, เจ้าหน้าที่)
 -- ============================================
 INSERT INTO members (member_code, first_name, last_name, email, phone, member_type) VALUES
 ('STD-2024-001', 'Somchai', 'Wongsakul', 'somchai.w@university.ac.th', '081-234-5678', 'Student'),
 ('STD-2024-002', 'Nattaporn', 'Srisuwan', 'nattaporn.s@university.ac.th', '082-345-6789', 'Student'),
 ('STD-2024-003', 'Pitchaya', 'Tanaka', 'pitchaya.t@university.ac.th', '083-456-7890', 'Student'),
 ('STD-2024-004', 'Kanokwan', 'Prasert', 'kanokwan.p@university.ac.th', '084-567-8901', 'Student'),
+('STD-2024-005', 'Chayanon', 'Ruangdet', 'chayanon.r@university.ac.th', '085-111-2233', 'Student'),
+('STD-2024-006', 'Krittin', 'Thongdee', 'krittin.t@university.ac.th', '086-222-3344', 'Student'),
+('STD-2024-007', 'Waritsara', 'Siriwong', 'waritsara.s@university.ac.th', '087-333-4455', 'Student'),
+('STD-2024-008', 'Phongsakorn', 'Boonmee', 'phongsakorn.b@university.ac.th', '088-444-5566', 'Student'),
+('STD-2024-009', 'Thanawat', 'Chaiprasert', 'thanawat.c@university.ac.th', '089-555-6677', 'Student'),
+('STD-2024-010', 'Suphattra', 'Kittisak', 'suphattra.k@university.ac.th', '081-666-7788', 'Student'),
+('STD-2024-011', 'Peeranat', 'Sukhum', 'peeranat.s@university.ac.th', '082-777-8899', 'Student'),
+('STD-2024-012', 'Jirapat', 'Wattana', 'jirapat.w@university.ac.th', '083-888-9900', 'Student'),
+('STD-2024-013', 'Sirikanya', 'Phromma', 'sirikanya.p@university.ac.th', '084-999-0011', 'Student'),
+('STD-2024-014', 'Teepakorn', 'Kerdphon', 'teepakorn.k@university.ac.th', '085-123-4567', 'Student'),
+('STD-2024-015', 'Amonrat', 'Chaisiri', 'amonrat.c@university.ac.th', '086-234-5678', 'Student'),
+('STD-2024-016', 'Bannawit', 'Songsiri', 'bannawit.s@university.ac.th', '087-345-6789', 'Student'),
+('STD-2024-017', 'Chanidapa', 'Wannarat', 'chanidapa.w@university.ac.th', '088-456-7890', 'Student'),
+('STD-2024-018', 'Danupat', 'Jiamprasert', 'danupat.j@university.ac.th', '089-567-8901', 'Student'),
+('STD-2024-019', 'Ekkarat', 'Chansuk', 'ekkarat.c@university.ac.th', '081-678-9012', 'Student'),
+('STD-2024-020', 'Fasai', 'Phaibun', 'fasai.p@university.ac.th', '082-789-0123', 'Student'),
+('STD-2024-021', 'Gunyarat', 'Suraphon', 'gunyarat.s@university.ac.th', '083-890-1234', 'Student'),
+('STD-2024-022', 'Harit', 'Inthachot', 'harit.i@university.ac.th', '084-901-2345', 'Student'),
+('STD-2024-023', 'Issara', 'Kiatprasert', 'issara.k@university.ac.th', '085-012-3456', 'Student'),
+('STD-2024-024', 'Jidapa', 'Lapthanasiri', 'jidapa.l@university.ac.th', '086-123-9876', 'Student'),
+('STD-2024-025', 'Korawit', 'Muenphan', 'korawit.m@university.ac.th', '087-234-8765', 'Student'),
+('STD-2024-026', 'Lalitpat', 'Naovarat', 'lalitpat.n@university.ac.th', '088-345-7654', 'Student'),
+('STD-2024-027', 'Methee', 'Omkaew', 'methee.o@university.ac.th', '089-456-6543', 'Student'),
+('STD-2024-028', 'Napassorn', 'Phothip', 'napassorn.p@university.ac.th', '081-567-5432', 'Student'),
+('STD-2024-029', 'Oraphan', 'Quesada', 'oraphan.q@university.ac.th', '082-678-4321', 'Student'),
+('STD-2024-030', 'Pattaraphon', 'Rattanamongkol', 'pattaraphon.r@university.ac.th', '083-789-3210', 'Student'),
+('STD-2024-031', 'Ratchanon', 'Saengmani', 'ratchanon.s@university.ac.th', '084-890-2109', 'Student'),
+('STD-2024-032', 'Sirada', 'Thepsiri', 'sirada.t@university.ac.th', '085-901-1098', 'Student'),
+('STD-2024-033', 'Thanaphat', 'Udomsap', 'thanaphat.u@university.ac.th', '086-012-0987', 'Student'),
+('STD-2024-034', 'Ukrit', 'Vorasith', 'ukrit.v@university.ac.th', '087-123-9870', 'Student'),
+('STD-2024-035', 'Varisa', 'Wattanaprasert', 'varisa.w@university.ac.th', '088-234-8769', 'Student'),
+('STD-2024-036', 'Wachiravit', 'Yongcharoen', 'wachiravit.y@university.ac.th', '089-345-7658', 'Student'),
+('STD-2024-037', 'Yada', 'Ziriphat', 'yada.z@university.ac.th', '081-456-6547', 'Student'),
+('STD-2024-038', 'Alex', 'Turner', 'alex.t@university.ac.th', '082-567-5436', 'Student'),
+('STD-2024-039', 'Emily', 'Chen', 'emily.c@university.ac.th', '083-678-4325', 'Student'),
+('STD-2024-040', 'Lucas', 'Silva', 'lucas.s@university.ac.th', '084-789-3214', 'Student'),
+('STD-2024-041', 'Kenji', 'Sato', 'kenji.s@university.ac.th', '085-890-2103', 'Student'),
+('STD-2024-042', 'Sophia', 'Williams', 'sophia.w@university.ac.th', '086-901-1092', 'Student'),
+('STD-2024-043', 'Liam', 'Johnson', 'liam.j@university.ac.th', '087-012-0981', 'Student'),
+('STD-2024-044', 'Zainab', 'Al-Mansoor', 'zainab.a@university.ac.th', '088-123-9874', 'Student'),
+('STD-2024-045', 'Pornpawee', 'Jirakul', 'pornpawee.j@university.ac.th', '089-234-8763', 'Student'),
 ('TCH-2024-001', 'Dr. Apinya', 'Charoensuk', 'apinya.c@university.ac.th', '085-678-9012', 'Teacher'),
 ('TCH-2024-002', 'Prof. Wichai', 'Kamolrat', 'wichai.k@university.ac.th', '086-789-0123', 'Teacher'),
+('TCH-2024-003', 'Assoc. Prof. Kittipong', 'Boonserm', 'kittipong.b@university.ac.th', '081-333-7711', 'Teacher'),
+('TCH-2024-004', 'Dr. Chutima', 'Pattana', 'chutima.p@university.ac.th', '082-444-8822', 'Teacher'),
+('TCH-2024-005', 'Dr. Narin', 'Theeraphon', 'narin.t@university.ac.th', '083-555-9933', 'Teacher'),
+('TCH-2024-006', 'Asst. Prof. Ratchanee', 'Viroj', 'ratchanee.v@university.ac.th', '084-666-0044', 'Teacher'),
+('TCH-2024-007', 'Dr. Marcus', 'Vance', 'marcus.v@university.ac.th', '085-777-1155', 'Teacher'),
+('TCH-2024-008', 'Prof. Somsak', 'Lertmongkol', 'somsak.l@university.ac.th', '086-888-2266', 'Teacher'),
+('TCH-2024-009', 'Dr. Preecha', 'Sinchai', 'preecha.s@university.ac.th', '087-999-3377', 'Teacher'),
+('TCH-2024-010', 'Dr. Wanida', 'Kosol', 'wanida.k@university.ac.th', '088-000-4488', 'Teacher'),
+('TCH-2024-011', 'Assoc. Prof. David', 'Miller', 'david.m@university.ac.th', '089-111-5599', 'Teacher'),
+('TCH-2024-012', 'Dr. Siriporn', 'Nirandorn', 'siriporn.n@university.ac.th', '081-222-6600', 'Teacher'),
 ('STF-2024-001', 'Pranee', 'Boonmee', 'pranee.b@university.ac.th', '087-890-1234', 'Staff'),
-('STF-2024-002', 'Sakchai', 'Intaraprasit', 'sakchai.i@university.ac.th', '088-901-2345', 'Staff');
-
+('STF-2024-002', 'Sakchai', 'Intaraprasit', 'sakchai.i@university.ac.th', '088-901-2345', 'Staff'),
+('STF-2024-003', 'Malee', 'Channarong', 'malee.c@university.ac.th', '089-012-3456', 'Staff'),
+('STF-2024-004', 'Kamonwan', 'Rungrueang', 'kamonwan.r@university.ac.th', '081-123-9988', 'Staff'),
+('STF-2024-005', 'Nattapol', 'Kosit', 'nattapol.k@university.ac.th', '082-234-8877', 'Staff'),
+('STF-2024-006', 'Preeyanuch', 'Saengthong', 'preeyanuch.s@university.ac.th', '083-345-7766', 'Staff'),
+('STF-2024-007', 'Surachai', 'Thepmanee', 'surachai.t@university.ac.th', '084-456-6655', 'Staff'),
+('STF-2024-008', 'Benjamas', 'Phunsuk', 'benjamas.p@university.ac.th', '085-567-5544', 'Staff'),
+('STF-2024-009', 'Charnvit', 'Anusorn', 'charnvit.a@university.ac.th', '086-678-4433', 'Staff'),
+('STF-2024-010', 'Duangdao', 'Kaewkla', 'duangdao.k@university.ac.th', '087-789-3322', 'Staff');
 
 -- ============================================
--- Borrowings - รายการยืมหนังสือ
+-- Sample Borrowings
 -- ============================================
-
--- รายการยืม #1: Somchai ยืม 2 เล่ม - ยังไม่คืน
-INSERT INTO borrowings (id, member_id, borrow_date, due_date, status) VALUES
-(1, 1, '2024-08-15', '2024-08-29', 'Borrowed');
-
-INSERT INTO borrowing_items (borrowing_id, book_id, status) VALUES
-(1, 1, 'Borrowed'),
-(1, 4, 'Borrowed');
-
--- รายการยืม #2: Nattaporn ยืม 1 เล่ม - คืนแล้ว
-INSERT INTO borrowings (id, member_id, borrow_date, due_date, status) VALUES
-(2, 2, '2024-08-10', '2024-08-24', 'Returned');
+INSERT INTO borrowings (id, member_id, borrow_date, due_date, status, notes) VALUES
+(1, 1, '2025-01-10', '2025-01-24', 'Borrowed', 'Course study reference'),
+(2, 2, '2025-01-05', '2025-01-19', 'Returned', 'Returned in good condition'),
+(3, 3, '2024-12-01', '2024-12-15', 'Overdue', 'Reminder email sent'),
+(4, 46, '2025-01-12', '2025-01-26', 'Borrowed', 'Research preparation'),
+(5, 47, '2024-12-10', '2024-12-24', 'Returned', 'Semester class teaching');
 
 INSERT INTO borrowing_items (borrowing_id, book_id, return_date, status) VALUES
-(2, 3, '2024-08-20', 'Returned');
-
--- รายการยืม #3: Dr. Apinya ยืม 2 เล่ม - คืนแล้ว
-INSERT INTO borrowings (id, member_id, borrow_date, due_date, status) VALUES
-(3, 5, '2024-08-05', '2024-08-19', 'Returned');
-
-INSERT INTO borrowing_items (borrowing_id, book_id, return_date, status) VALUES
-(3, 7, '2024-08-18', 'Returned'),
-(3, 8, '2024-08-18', 'Returned');
-
--- รายการยืม #4: Pitchaya ยืม 1 เล่ม - เกินกำหนด
-INSERT INTO borrowings (id, member_id, borrow_date, due_date, status) VALUES
-(4, 3, '2024-07-20', '2024-08-03', 'Overdue');
-
-INSERT INTO borrowing_items (borrowing_id, book_id, status) VALUES
-(4, 2, 'Overdue');
-
--- รายการยืม #5: Pranee ยืม 1 เล่ม - ยังไม่คืน
-INSERT INTO borrowings (id, member_id, borrow_date, due_date, status) VALUES
-(5, 7, '2024-08-20', '2024-09-03', 'Borrowed');
-
-INSERT INTO borrowing_items (borrowing_id, book_id, status) VALUES
-(5, 5, 'Borrowed');
-
--- รายการยืม #6: Kanokwan ยืม 2 เล่ม - คืนแล้ว
-INSERT INTO borrowings (id, member_id, borrow_date, due_date, status) VALUES
-(6, 4, '2024-07-25', '2024-08-08', 'Returned');
-
-INSERT INTO borrowing_items (borrowing_id, book_id, return_date, status) VALUES
-(6, 6, '2024-08-05', 'Returned'),
-(6, 9, '2024-08-05', 'Returned');
-
--- รายการยืม #7: Prof. Wichai ยืม 1 เล่ม - ยังไม่คืน
-INSERT INTO borrowings (id, member_id, borrow_date, due_date, status) VALUES
-(7, 6, '2024-08-22', '2024-09-05', 'Borrowed');
-
-INSERT INTO borrowing_items (borrowing_id, book_id, status) VALUES
-(7, 8, 'Borrowed');
+(1, 1, NULL, 'Borrowed'),
+(1, 2, NULL, 'Borrowed'),
+(2, 3, '2025-01-15', 'Returned'),
+(3, 6, NULL, 'Overdue'),
+(4, 7, NULL, 'Borrowed'),
+(5, 8, '2024-12-20', 'Returned'),
+(5, 9, '2024-12-20', 'Returned');
