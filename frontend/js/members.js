@@ -52,10 +52,10 @@ function renderMembersTable(members) {
       <tbody>
         ${members.map(member => `
           <tr>
-            <td class="font-mono text-sm text-slate-500">${member.member_code}</td>
-            <td class="font-medium text-slate-700">${member.first_name} ${member.last_name}</td>
-            <td class="text-sm text-slate-500">${member.email}</td>
-            <td class="text-sm text-slate-500">${member.phone || '-'}</td>
+            <td class="font-mono text-xs text-zinc-500">${member.member_code}</td>
+            <td class="font-medium text-xs text-zinc-800">${member.first_name} ${member.last_name}</td>
+            <td class="text-xs text-zinc-500">${member.email}</td>
+            <td class="text-xs text-zinc-500">${member.phone || '-'}</td>
             <td>${getMemberTypeBadge(member.member_type)}</td>
             <td>
               <div class="flex gap-1">

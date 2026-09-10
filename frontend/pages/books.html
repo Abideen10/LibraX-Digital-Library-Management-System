@@ -5,84 +5,102 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="LibraX - Book Management - Browse, search, and manage library books">
   <title>Books | LibraX Digital Library</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="../css/style.css">
 </head>
-<body class="bg-slate-100">
+<body class="bg-[#fafafa] min-h-screen text-zinc-900">
   <div class="flex min-h-screen">
 
-    <!-- Sidebar -->
-    <aside id="sidebar" class="sidebar bg-slate-900 text-white flex-shrink-0 fixed lg:sticky top-0 h-screen overflow-y-auto z-40">
-      <div class="p-5 border-b border-slate-700">
-        <div class="flex items-center gap-3">
-          <div class="w-10 h-10 bg-indigo-600 rounded-lg flex items-center justify-center">
-            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
-          </div>
-          <div>
-            <h1 class="text-lg font-bold">LibraX</h1>
-            <p class="text-xs text-slate-400">Digital Library</p>
+    <!-- Clean Minimalist Sidebar -->
+    <aside id="sidebar" class="sidebar flex-shrink-0 fixed lg:sticky top-0 h-screen overflow-y-auto z-40 flex flex-col justify-between p-3">
+      <div>
+        <!-- Brand Header -->
+        <div class="px-2 py-3 mb-2 border-b border-zinc-100">
+          <div class="flex items-center gap-2.5">
+            <div class="w-7 h-7 bg-zinc-900 rounded-md flex items-center justify-center text-white">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+              </svg>
+            </div>
+            <div>
+              <h1 class="text-xs font-bold text-zinc-900 tracking-tight leading-none">LibraX</h1>
+              <span class="text-[10px] text-zinc-400 font-medium">Digital Library</span>
+            </div>
           </div>
         </div>
+
+        <!-- Navigation Links -->
+        <nav class="space-y-0.5">
+          <a href="../index.html" class="sidebar-link">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+            Dashboard
+          </a>
+          <a href="./books.html" class="sidebar-link active">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+            Books
+          </a>
+          <a href="./members.html" class="sidebar-link">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+            Members
+          </a>
+          <a href="./borrow.html" class="sidebar-link">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg>
+            Borrow & Return
+          </a>
+          <a href="./history.html" class="sidebar-link">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            History
+          </a>
+        </nav>
       </div>
-      <nav class="p-4 space-y-1">
-        <a href="../index.html" class="sidebar-link">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
-          Dashboard
-        </a>
-        <a href="./books.html" class="sidebar-link active">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
-          Books
-        </a>
-        <a href="./members.html" class="sidebar-link">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
-          Members
-        </a>
-        <a href="./borrow.html" class="sidebar-link">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg>
-          Borrow & Return
-        </a>
-        <a href="./history.html" class="sidebar-link">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-          History
-        </a>
-      </nav>
+
+      <div class="px-2.5 py-2 rounded-md bg-zinc-50 border border-zinc-150 text-[11px] text-zinc-500">
+        <span class="font-medium text-zinc-700">Catalog Module</span>
+      </div>
     </aside>
 
-    <div id="sidebarOverlay" class="hidden fixed inset-0 bg-black bg-opacity-50 z-30 lg:hidden" onclick="toggleSidebar()"></div>
+    <div id="sidebarOverlay" class="hidden fixed inset-0 bg-black/20 z-30 lg:hidden" onclick="toggleSidebar()"></div>
 
-    <!-- Main Content -->
-    <main class="flex-1 lg:ml-0">
-      <header class="bg-white border-b border-slate-200 px-6 py-4 flex items-center justify-between sticky top-0 z-20">
-        <div class="flex items-center gap-4">
-          <button class="lg:hidden p-2 rounded-lg hover:bg-slate-100" onclick="toggleSidebar()">
-            <svg class="w-6 h-6 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+    <!-- Main Workspace -->
+    <main class="flex-1 flex flex-col min-w-0">
+      <header class="bg-white border-b border-zinc-200/80 px-6 h-12 flex items-center justify-between sticky top-0 z-20">
+        <div class="flex items-center gap-3">
+          <button class="lg:hidden p-1 rounded hover:bg-zinc-100 text-zinc-500" onclick="toggleSidebar()">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
           </button>
-          <h2 class="text-xl font-semibold text-slate-800">Books Management</h2>
+          <h2 class="text-xs font-semibold text-zinc-900 tracking-tight">Books Catalog</h2>
         </div>
-        <button class="btn btn-primary" onclick="openAddBookModal()">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+        <button class="btn btn-primary btn-sm" onclick="openAddBookModal()">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
           Add Book
         </button>
       </header>
 
-      <div class="p-6">
-        <!-- Search & Filter -->
-        <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-4 mb-5">
-          <div class="search-bar">
-            <div class="flex-1 min-w-[200px]">
-              <input type="text" id="searchInput" placeholder="Search by title, author, or ISBN..." class="form-input" oninput="handleSearch()">
+      <div class="p-6 space-y-4 w-full">
+        <!-- Compact Search & Filter Toolbar -->
+        <div class="card-minimal p-3 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
+          <div class="flex-1 flex flex-col sm:flex-row items-center gap-2.5">
+            <div class="relative w-full sm:w-72">
+              <svg class="w-3.5 h-3.5 text-zinc-400 absolute left-2.5 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+              </svg>
+              <input type="text" id="searchInput" placeholder="Search by title, author, or ISBN..." class="form-input pl-8" oninput="handleSearch()">
             </div>
-            <select id="categoryFilter" class="form-input w-auto" onchange="handleSearch()">
-              <option value="">All Categories</option>
-            </select>
+            <div class="w-full sm:w-48">
+              <select id="categoryFilter" class="form-input" onchange="handleSearch()">
+                <option value="">All Categories</option>
+              </select>
+            </div>
           </div>
         </div>
 
-        <!-- Books Table -->
-        <div class="bg-white rounded-xl shadow-sm border border-slate-200">
+        <!-- Books Table Card -->
+        <div class="card-minimal overflow-hidden">
           <div id="booksTableContainer" class="overflow-x-auto">
-            <div class="text-center py-12"><div class="spinner mx-auto"></div></div>
+            <div class="text-center py-10"><div class="spinner mx-auto"></div></div>
           </div>
         </div>
       </div>
@@ -92,55 +110,61 @@
   <!-- Add/Edit Book Modal -->
   <div id="bookModal" class="modal-overlay" onclick="if(event.target===this)closeModal('bookModal')">
     <div class="modal-content">
-      <div class="flex items-center justify-between mb-5">
-        <h3 id="bookModalTitle" class="text-lg font-semibold text-slate-800">Add New Book</h3>
-        <button onclick="closeModal('bookModal')" class="p-1 hover:bg-slate-100 rounded-lg">
-          <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+      <div class="flex items-center justify-between pb-3 border-b border-zinc-100 mb-4">
+        <h3 id="bookModalTitle" class="text-xs font-bold text-zinc-900">Add New Book</h3>
+        <button onclick="closeModal('bookModal')" class="p-1 hover:bg-zinc-100 rounded text-zinc-400 hover:text-zinc-600 transition-colors">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
         </button>
       </div>
       <form id="bookForm" onsubmit="handleBookSubmit(event)">
         <input type="hidden" id="bookId">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="space-y-3">
           <div>
-            <label class="form-label">ISBN *</label>
-            <input type="text" id="bookIsbn" class="form-input" required>
+            <label class="form-label">Book Title *</label>
+            <input type="text" id="bookTitle" class="form-input" placeholder="e.g. Clean Code" required>
           </div>
-          <div>
-            <label class="form-label">Category *</label>
-            <input type="text" id="bookCategory" class="form-input" required>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+            <div>
+              <label class="form-label">ISBN *</label>
+              <input type="text" id="bookIsbn" class="form-input font-mono text-[11px]" placeholder="e.g. 978-0-13-235088-4" required>
+            </div>
+            <div>
+              <label class="form-label">Category *</label>
+              <input type="text" id="bookCategory" class="form-input" placeholder="e.g. Computer Science" required>
+            </div>
           </div>
-          <div class="md:col-span-2">
-            <label class="form-label">Title *</label>
-            <input type="text" id="bookTitle" class="form-input" required>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+            <div>
+              <label class="form-label">Author *</label>
+              <input type="text" id="bookAuthor" class="form-input" placeholder="e.g. Robert C. Martin" required>
+            </div>
+            <div>
+              <label class="form-label">Publisher</label>
+              <input type="text" id="bookPublisher" class="form-input" placeholder="e.g. Prentice Hall">
+            </div>
           </div>
-          <div class="md:col-span-2">
-            <label class="form-label">Author *</label>
-            <input type="text" id="bookAuthor" class="form-input" required>
-          </div>
-          <div>
-            <label class="form-label">Publisher</label>
-            <input type="text" id="bookPublisher" class="form-input">
-          </div>
-          <div>
-            <label class="form-label">Published Year</label>
-            <input type="number" id="bookYear" class="form-input" min="1900" max="2099">
-          </div>
-          <div>
-            <label class="form-label">Quantity *</label>
-            <input type="number" id="bookQuantity" class="form-input" min="0" required>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+            <div>
+              <label class="form-label">Published Year</label>
+              <input type="number" id="bookYear" class="form-input" placeholder="e.g. 2008" min="1000" max="2100">
+            </div>
+            <div>
+              <label class="form-label">Quantity *</label>
+              <input type="number" id="bookQuantity" class="form-input" placeholder="e.g. 5" min="1" required>
+            </div>
           </div>
           <div id="availableQtyField" class="hidden">
-            <label class="form-label">Available Quantity</label>
+            <label class="form-label">Available Quantity *</label>
             <input type="number" id="bookAvailableQty" class="form-input" min="0">
           </div>
-          <div class="md:col-span-2">
-            <label class="form-label">Description</label>
-            <textarea id="bookDescription" class="form-input" rows="3"></textarea>
+          <div>
+            <label class="form-label">Description / Summary</label>
+            <textarea id="bookDescription" class="form-input" rows="2" placeholder="Brief book summary..."></textarea>
           </div>
         </div>
-        <div class="flex justify-end gap-3 mt-5">
-          <button type="button" class="btn btn-secondary" onclick="closeModal('bookModal')">Cancel</button>
-          <button type="submit" class="btn btn-primary" id="bookSubmitBtn">Add Book</button>
+        <div class="flex items-center justify-end gap-2 pt-3 border-t border-zinc-100 mt-4">
+          <button type="button" class="btn btn-secondary btn-sm" onclick="closeModal('bookModal')">Cancel</button>
+          <button type="submit" id="bookSubmitBtn" class="btn btn-primary btn-sm">Add Book</button>
         </div>
       </form>
     </div>
@@ -149,10 +173,10 @@
   <!-- Book Detail Modal -->
   <div id="bookDetailModal" class="modal-overlay" onclick="if(event.target===this)closeModal('bookDetailModal')">
     <div class="modal-content">
-      <div class="flex items-center justify-between mb-5">
-        <h3 class="text-lg font-semibold text-slate-800">Book Details</h3>
-        <button onclick="closeModal('bookDetailModal')" class="p-1 hover:bg-slate-100 rounded-lg">
-          <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+      <div class="flex items-center justify-between pb-3 border-b border-zinc-100 mb-3">
+        <h3 class="text-xs font-bold text-zinc-900">Volume Details</h3>
+        <button onclick="closeModal('bookDetailModal')" class="p-1 hover:bg-zinc-100 rounded text-zinc-400 hover:text-zinc-600">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
         </button>
       </div>
       <div id="bookDetailContent"></div>

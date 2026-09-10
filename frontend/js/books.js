@@ -70,16 +70,16 @@ function renderBooksTable(books) {
       <tbody>
         ${books.map(book => `
           <tr>
-            <td class="text-xs font-mono text-slate-500">${book.isbn}</td>
+            <td class="text-xs font-mono text-zinc-500">${book.isbn}</td>
             <td>
-              <button class="text-left font-medium text-indigo-600 hover:text-indigo-800" onclick="viewBookDetail(${book.id})">
+              <button class="text-left font-medium text-zinc-900 hover:text-indigo-600 transition-colors" onclick="viewBookDetail(${book.id})">
                 ${book.title}
               </button>
             </td>
-            <td class="text-slate-600">${book.author}</td>
-            <td><span class="text-xs bg-slate-100 text-slate-600 px-2 py-1 rounded">${book.category}</span></td>
-            <td class="text-center">${book.quantity}</td>
-            <td class="text-center">${book.available_quantity}</td>
+            <td class="text-zinc-600 text-xs">${book.author}</td>
+            <td><span class="category-badge">${book.category}</span></td>
+            <td class="text-center text-xs font-mono text-zinc-600">${book.quantity}</td>
+            <td class="text-center text-xs font-mono font-medium ${book.available_quantity > 0 ? 'text-emerald-700' : 'text-rose-600'}">${book.available_quantity}</td>
             <td>${getStatusBadge(book.status)}</td>
             <td>
               <div class="flex gap-1">

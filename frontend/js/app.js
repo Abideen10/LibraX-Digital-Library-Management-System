@@ -158,7 +158,7 @@ function getStatusBadge(status) {
     'Out of Stock': 'badge-out-of-stock'
   };
   const badgeClass = statusMap[status] || 'badge-available';
-  return `<span class="badge ${badgeClass}">${status}</span>`;
+  return `<span class="badge ${badgeClass}"><span class="badge-dot"></span>${status}</span>`;
 }
 
 /**

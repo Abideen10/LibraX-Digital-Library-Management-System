@@ -52,13 +52,17 @@ function renderHistoryTable(borrowings) {
       <tbody>
         ${borrowings.map(b => `
           <tr>
-            <td class="font-medium">#${b.id}</td>
+            <td class="font-mono text-xs text-zinc-500">#${b.id}</td>
             <td>
-              <div class="font-medium text-slate-700">${b.first_name} ${b.last_name}</div>
-              <div class="text-xs text-slate-400">${b.member_code} · ${getMemberTypeBadge(b.member_type)}</div>
+              <div class="font-medium text-xs text-zinc-900">${b.first_name} ${b.last_name}</div>
+              <div class="text-[11px] font-mono text-zinc-400 mt-0.5 flex items-center gap-1.5">
+                <span>${b.member_code}</span>
+                <span>·</span>
+                ${getMemberTypeBadge(b.member_type)}
+              </div>
             </td>
-            <td>${formatDate(b.borrow_date)}</td>
-            <td>${formatDate(b.due_date)}</td>
+            <td class="text-xs text-zinc-600">${formatDate(b.borrow_date)}</td>
+            <td class="text-xs text-zinc-600">${formatDate(b.due_date)}</td>
             <td>${getStatusBadge(b.status)}</td>
             <td>
               <button class="btn btn-secondary btn-sm" onclick="viewHistoryDetail(${b.id})" title="View Details">
