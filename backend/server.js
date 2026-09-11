@@ -140,13 +140,13 @@ async function startServer() {
 
   server.listen(PORT, () => {
     console.log('');
-    console.log('📚 ============================================');
-    console.log('   LibraX Digital Library Management System');
-    console.log('   ============================================');
-    console.log(`   🌐 Frontend: http://localhost:${PORT}`);
-    console.log(`   🔌 API:      http://localhost:${PORT}/api`);
-    console.log(`   📦 Port:     ${PORT}`);
-    console.log('   ============================================');
+    console.log('============================================');
+    console.log('LibraX Digital Library Management System');
+    console.log('============================================');
+    console.log(` Frontend: http://localhost:${PORT}`);
+    console.log(` API:      http://localhost:${PORT}/api`);
+    console.log(` Port:     ${PORT}`);
+    console.log('============================================');
     console.log('');
   });
 }
