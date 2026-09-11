@@ -57,20 +57,22 @@ function renderBooksTable(books) {
     <table class="data-table">
       <thead>
         <tr>
-          <th>ISBN</th>
+          <th class="whitespace-nowrap" style="width: 155px;">ISBN</th>
           <th>Title</th>
           <th>Author</th>
           <th>Category</th>
-          <th>Qty</th>
-          <th>Available</th>
-          <th>Status</th>
-          <th>Actions</th>
+          <th class="text-center" style="width: 65px;">Qty</th>
+          <th class="text-center" style="width: 80px;">Available</th>
+          <th style="width: 120px;">Status</th>
+          <th class="text-right" style="width: 85px;">Actions</th>
         </tr>
       </thead>
       <tbody>
         ${books.map(book => `
           <tr>
-            <td class="text-xs font-mono text-zinc-500">${book.isbn}</td>
+            <td class="whitespace-nowrap">
+              <span class="inline-block whitespace-nowrap px-2.5 py-0.5 rounded bg-slate-100/90 text-slate-700 font-mono text-[11px] font-medium border border-slate-200/80 tracking-tight">${book.isbn}</span>
+            </td>
             <td>
               <button class="text-left font-medium text-zinc-900 hover:text-indigo-600 transition-colors" onclick="viewBookDetail(${book.id})">
                 ${book.title}

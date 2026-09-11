@@ -175,6 +175,39 @@ function getMemberTypeBadge(type) {
 }
 
 /**
+ * สุ่มสีพาสเทลและสร้าง Avatar Chip สำหรับผู้ใช้
+ */
+function getAvatarChip(name, code = '') {
+  const colors = [
+    'bg-indigo-50 text-indigo-700 border-indigo-200/70',
+    'bg-emerald-50 text-emerald-700 border-emerald-200/70',
+    'bg-violet-50 text-violet-700 border-violet-200/70',
+    'bg-amber-50 text-amber-700 border-amber-200/70',
+    'bg-rose-50 text-rose-700 border-rose-200/70',
+    'bg-sky-50 text-sky-700 border-sky-200/70',
+    'bg-teal-50 text-teal-700 border-teal-200/70'
+  ];
+  const key = (code || name || 'A').toString();
+  let hash = 0;
+  for (let i = 0; i < key.length; i++) {
+    hash = key.charCodeAt(i) + ((hash << 5) - hash);
+  }
+  const colorClass = colors[Math.abs(hash) % colors.length];
+
+  let initials = '?';
+  if (name) {
+    const parts = name.trim().split(/\s+/);
+    if (parts.length >= 2) {
+      initials = (parts[0][0] + parts[1][0]).toUpperCase();
+    } else {
+      initials = name.substring(0, 2).toUpperCase();
+    }
+  }
+
+  return `<span class="avatar-chip ${colorClass}">${initials}</span>`;
+}
+
+/**
  * แสดง/ซ่อน Loading
  */
 function showLoading(containerId) {

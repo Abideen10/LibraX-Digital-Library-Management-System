@@ -41,19 +41,26 @@ function renderMembersTable(members) {
     <table class="data-table">
       <thead>
         <tr>
-          <th>Code</th>
+          <th class="whitespace-nowrap" style="width: 140px;">Code</th>
           <th>Name</th>
           <th>Email</th>
-          <th>Phone</th>
-          <th>Type</th>
-          <th>Actions</th>
+          <th class="whitespace-nowrap" style="width: 130px;">Phone</th>
+          <th style="width: 110px;">Type</th>
+          <th class="text-right" style="width: 110px;">Actions</th>
         </tr>
       </thead>
       <tbody>
         ${members.map(member => `
           <tr>
-            <td class="font-mono text-xs text-zinc-500">${member.member_code}</td>
-            <td class="font-medium text-xs text-zinc-800">${member.first_name} ${member.last_name}</td>
+            <td>
+              <span class="px-2 py-0.5 rounded bg-slate-100/90 text-slate-600 font-mono text-[11px] font-semibold border border-slate-200/80">${member.member_code}</span>
+            </td>
+            <td>
+              <div class="flex items-center gap-2.5">
+                ${getAvatarChip(`${member.first_name} ${member.last_name}`, member.member_code)}
+                <span class="font-semibold text-xs text-slate-800">${member.first_name} ${member.last_name}</span>
+              </div>
+            </td>
             <td class="text-xs text-zinc-500">${member.email}</td>
             <td class="text-xs text-zinc-500">${member.phone || '-'}</td>
             <td>${getMemberTypeBadge(member.member_type)}</td>

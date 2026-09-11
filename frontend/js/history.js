@@ -41,24 +41,31 @@ function renderHistoryTable(borrowings) {
     <table class="data-table">
       <thead>
         <tr>
-          <th>ID</th>
+          <th style="width: 75px;">ID</th>
           <th>Member</th>
-          <th>Borrow Date</th>
-          <th>Due Date</th>
-          <th>Status</th>
-          <th>Actions</th>
+          <th class="whitespace-nowrap" style="width: 120px;">Borrow Date</th>
+          <th class="whitespace-nowrap" style="width: 120px;">Due Date</th>
+          <th style="width: 120px;">Status</th>
+          <th class="text-right" style="width: 100px;">Actions</th>
         </tr>
       </thead>
       <tbody>
         ${borrowings.map(b => `
           <tr>
-            <td class="font-mono text-xs text-zinc-500">#${b.id}</td>
             <td>
-              <div class="font-medium text-xs text-zinc-900">${b.first_name} ${b.last_name}</div>
-              <div class="text-[11px] font-mono text-zinc-400 mt-0.5 flex items-center gap-1.5">
-                <span>${b.member_code}</span>
-                <span>·</span>
-                ${getMemberTypeBadge(b.member_type)}
+              <span class="px-2 py-0.5 rounded bg-slate-100/90 text-slate-600 font-mono text-[11px] font-semibold border border-slate-200/80">#${b.id}</span>
+            </td>
+            <td>
+              <div class="flex items-center gap-2.5">
+                ${getAvatarChip(`${b.first_name} ${b.last_name}`, b.member_code)}
+                <div>
+                  <div class="font-semibold text-xs text-slate-900">${b.first_name} ${b.last_name}</div>
+                  <div class="text-[11px] font-mono text-slate-400 mt-0.5 flex items-center gap-1.5">
+                    <span>${b.member_code}</span>
+                    <span>·</span>
+                    ${getMemberTypeBadge(b.member_type)}
+                  </div>
+                </div>
               </div>
             </td>
             <td class="text-xs text-zinc-600">${formatDate(b.borrow_date)}</td>

@@ -12,7 +12,7 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="./css/style.css">
 </head>
-<body class="bg-[#fafafa] min-h-screen text-zinc-900">
+<body class="bg-[#f8fafc] min-h-screen text-slate-900">
   <div class="flex min-h-screen">
 
     <!-- Clean Minimalist Sidebar -->
@@ -55,10 +55,13 @@
       </div>
 
       <!-- Minimal Status Indicator -->
-      <div class="px-3 py-2 rounded-md bg-zinc-50 border border-zinc-150 text-xs text-zinc-500">
+      <div class="px-3 py-2 rounded-md bg-emerald-50/70 border border-emerald-200/70 text-xs text-emerald-800">
         <div class="flex items-center gap-2">
-          <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
-          <span class="font-medium text-zinc-700">Library Online</span>
+          <span class="relative flex h-2 w-2">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+          </span>
+          <span class="font-medium text-emerald-700">Library Online</span>
         </div>
       </div>
     </aside>
@@ -99,7 +102,7 @@
               <h3 class="text-xs font-semibold text-zinc-900">Recent Circulation Activity</h3>
               <p class="text-[11px] text-zinc-400 mt-0.5">Latest book loan and return events</p>
             </div>
-            <a href="./pages/history.html" class="text-zinc-600 hover:text-zinc-900 text-[11px] font-medium transition-colors">
+            <a href="./pages/history.html" class="text-indigo-600 hover:text-indigo-700 text-[11px] font-semibold transition-colors">
               View All History →
             </a>
           </div>
@@ -135,30 +138,49 @@
         {
           title: 'Total Titles',
           value: Number(data.books.total_books || 0).toLocaleString(),
-          subtitle: `${Number(data.books.total_copies || 0).toLocaleString()} copies in inventory`
+          subtitle: `${Number(data.books.total_copies || 0).toLocaleString()} copies in inventory`,
+          colorClass: 'stat-card-indigo',
+          iconBg: 'bg-indigo-50 text-indigo-600 border border-indigo-100/80',
+          icon: `<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>`
         },
         {
           title: 'Available Copies',
           value: Number(data.books.available_copies || 0).toLocaleString(),
-          subtitle: 'Available to borrow'
+          subtitle: 'Available to borrow',
+          colorClass: 'stat-card-emerald',
+          iconBg: 'bg-emerald-50 text-emerald-600 border border-emerald-100/80',
+          icon: `<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>`
         },
         {
           title: 'Registered Members',
           value: Number(data.total_members || 0).toLocaleString(),
-          subtitle: 'Patrons & staff'
+          subtitle: 'Patrons & staff',
+          colorClass: 'stat-card-violet',
+          iconBg: 'bg-violet-50 text-violet-600 border border-violet-100/80',
+          icon: `<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>`
         },
         {
           title: 'Active Loans',
           value: Number((data.borrowings.active_borrowings || 0) + (data.borrowings.overdue_borrowings || 0)).toLocaleString(),
-          subtitle: `${data.borrowings.overdue_borrowings || 0} overdue items`
+          subtitle: `${data.borrowings.overdue_borrowings || 0} overdue items`,
+          colorClass: 'stat-card-amber',
+          iconBg: 'bg-amber-50 text-amber-600 border border-amber-100/80',
+          icon: `<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg>`
         }
       ];
 
       container.innerHTML = cards.map(card => `
-        <div class="stat-card">
-          <span class="text-[11px] font-medium text-zinc-500 uppercase tracking-wider block">${card.title}</span>
-          <div class="stat-card-number">${card.value}</div>
-          <span class="text-[11px] text-zinc-400 mt-0.5 block">${card.subtitle}</span>
+        <div class="stat-card ${card.colorClass}">
+          <div class="flex items-start justify-between">
+            <div>
+              <span class="text-[11px] font-semibold text-slate-500 uppercase tracking-wider block">${card.title}</span>
+              <div class="stat-card-number">${card.value}</div>
+              <span class="text-[11px] text-slate-400 mt-1 block">${card.subtitle}</span>
+            </div>
+            <div class="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${card.iconBg}">
+              ${card.icon}
+            </div>
+          </div>
         </div>
       `).join('');
     }
@@ -175,32 +197,44 @@
         <table class="data-table">
           <thead>
             <tr>
-              <th style="width: 70px;">ID</th>
+              <th style="width: 75px;">ID</th>
               <th>Member</th>
               <th>Borrow Date</th>
               <th>Due Date</th>
               <th>Status</th>
-              <th class="text-right" style="width: 80px;">Action</th>
+              <th class="text-right" style="width: 90px;">Action</th>
             </tr>
           </thead>
           <tbody>
-            ${borrowings.map(b => `
-              <tr>
-                <td class="font-mono text-[11px] text-zinc-400">#${b.id}</td>
-                <td>
-                  <span class="font-medium text-zinc-900">${b.first_name} ${b.last_name}</span>
-                  <span class="text-[11px] text-zinc-400 font-mono ml-1.5">(${b.member_code})</span>
-                </td>
-                <td class="text-zinc-600 text-xs">${formatDate(b.borrow_date)}</td>
-                <td class="text-zinc-600 text-xs font-medium">${formatDate(b.due_date)}</td>
-                <td>${getStatusBadge(b.status)}</td>
-                <td class="text-right">
-                  <a href="./pages/history.html" class="text-xs text-zinc-500 hover:text-zinc-900 font-medium">
-                    Details →
-                  </a>
-                </td>
-              </tr>
-            `).join('')}
+            ${borrowings.map(b => {
+              const isOverdue = b.status === 'Overdue';
+              return `
+                <tr>
+                  <td>
+                    <span class="px-2 py-0.5 rounded bg-slate-100/90 text-slate-600 font-mono text-[11px] font-semibold border border-slate-200/80">#${b.id}</span>
+                  </td>
+                  <td>
+                    <div class="flex items-center gap-2.5">
+                      ${getAvatarChip(`${b.first_name} ${b.last_name}`, b.member_code)}
+                      <div>
+                        <span class="font-semibold text-slate-800 text-xs block leading-tight">${b.first_name} ${b.last_name}</span>
+                        <span class="text-[10.5px] text-slate-400 font-mono">${b.member_code}</span>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="text-slate-500 text-xs">${formatDate(b.borrow_date)}</td>
+                  <td class="text-xs ${isOverdue ? 'text-rose-600 font-semibold' : 'text-slate-600 font-medium'}">
+                    ${isOverdue ? `<span class="inline-flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-rose-500"></span>${formatDate(b.due_date)}</span>` : formatDate(b.due_date)}
+                  </td>
+                  <td>${getStatusBadge(b.status)}</td>
+                  <td class="text-right">
+                    <a href="./pages/history.html" class="btn-table-action">
+                      Details <span>→</span>
+                    </a>
+                  </td>
+                </tr>
+              `;
+            }).join('')}
           </tbody>
         </table>
       `;
