@@ -234,7 +234,7 @@ async function handleBookSubmit(event) {
     description: document.getElementById('bookDescription').value.trim() || null
   };
 
-  let result;
+  let result; //สร้าง variable result เพื่อเก็บผลลัพธ์จาก API
 
   if (bookId) {
     // Edit mode - รวม available_quantity
