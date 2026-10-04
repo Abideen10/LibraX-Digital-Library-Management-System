@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="LibraX - Login to Digital Library Management System">
+  <title>Login | LibraX Digital Library</title>
+  <link rel="icon" type="image/png" href="../assets/images/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body class="bg-[#f8fafc] min-h-screen text-slate-900 flex items-center justify-center p-4">
+
+  <!-- Toast Notification Container -->
+  <div id="toastContainer" class="fixed top-4 right-4 z-50 flex flex-col gap-2"></div>
+
+  <!-- Login Card Container -->
+  <div class="w-full max-w-[420px]">
+    
+    <!-- Brand Header -->
+    <div class="text-center mb-8">
+      <div class="inline-flex items-center justify-center p-2.5 bg-white rounded-2xl border border-zinc-200/80 shadow-sm mb-3">
+        <img src="../assets/images/logo-icon.png" alt="LibraX Logo" class="w-10 h-10 object-contain">
+      </div>
+      <h1 class="text-2xl font-bold text-zinc-900 tracking-tight">Sign in to LibraX</h1>
+      <p class="text-sm text-zinc-500 mt-1">Digital Library Management System</p>
+    </div>
+
+    <!-- Login Form Card -->
+    <div class="bg-white rounded-2xl border border-zinc-200/80 p-7 shadow-xs">
+      
+      <!-- Error Message Banner -->
+      <div id="loginErrorBanner" class="hidden mb-4 p-3 rounded-lg bg-rose-50 border border-rose-200 text-rose-700 text-xs font-medium">
+        <div class="flex items-center gap-2">
+          <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+          </svg>
+          <span id="loginErrorMessage">Invalid email or password</span>
+        </div>
+      </div>
+
+      <form id="loginForm" onsubmit="handleLoginSubmit(event)" class="space-y-4">
+        <!-- Email Input -->
+        <div>
+          <label for="email" class="form-label">Email Address</label>
+          <div class="relative">
+            <input 
+              type="email" 
+              id="email" 
+              name="email" 
+              required 
+              autocomplete="email"
+              placeholder="admin@librax.com" 
+              class="form-input pl-9.5 text-sm"
+            >
+          </div>
+        </div>
+
+        <!-- Password Input -->
+        <div>
+          <div class="flex items-center justify-between mb-1.5">
+            <label for="password" class="form-label mb-0">Password</label>
+            <!-- <span class="text-[11px] text-zinc-400">Default: Admin@123</span> -->
+          </div>
+          <div class="relative">
+            <input 
+              type="password" 
+              id="password" 
+              name="password" 
+              required 
+              autocomplete="current-password"
+              placeholder="••••••••••••" 
+              class="form-input pl-9.5 pr-10 text-sm"
+            >
+            <button 
+              type="button" 
+              onclick="togglePasswordVisibility()" 
+              class="absolute inset-y-0 right-0 pr-3 flex items-center text-zinc-400 hover:text-zinc-600"
+              title="Toggle password visibility"
+            >
+              <svg id="eyeIcon" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Submit Button -->
+        <button 
+          type="submit" 
+          id="loginSubmitBtn" 
+          class="w-full btn btn-primary flex items-center justify-center gap-2 py-2.5 text-sm font-semibold rounded-lg mt-2 transition-all"
+        >
+          <span id="btnText">Sign In</span>
+          <div id="btnSpinner" class="hidden spinner w-4 h-4 border-2 border-white/30 border-t-white"></div>
+        </button>
+      </form>
+    </div>
+
+    <!-- Quick Demo Accounts Helper -->
+    <div class="mt-6 p-4 rounded-xl bg-zinc-100/70 border border-zinc-200/60 text-xs text-zinc-600">
+      <p class="font-semibold text-zinc-800 mb-1.5 flex items-center gap-1.5">
+        <svg class="w-3.5 h-3.5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+        </svg>
+        Demo Credentials
+      </p>
+      <div class="space-y-1.5 text-[11px] text-zinc-600 font-mono">
+        <div class="p-2 rounded bg-white border border-zinc-200/80">
+          <span class="inline-block px-1.5 py-0.5 rounded bg-indigo-50 text-indigo-700 font-sans font-semibold text-[10px] mr-1">Admin</span>
+          admin@librax.com - Admin@123
+        </div>
+        <div class="p-2 rounded bg-white border border-zinc-200/80">
+          <span class="inline-block px-1.5 py-0.5 rounded bg-emerald-50 text-emerald-700 font-sans font-semibold text-[10px] mr-1">Student</span>
+          somchai.w@university.ac.th - Student@123
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="../js/app.js"></script>
+  <script src="../js/login.js"></script>
+</body>
+</html>

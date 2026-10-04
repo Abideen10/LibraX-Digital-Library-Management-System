@@ -5,6 +5,54 @@
 
 const API_BASE = 'http://localhost:3000/api';
 
+// === Authentication Helpers ===
+
+/**
+ * ดึง JWT Token จาก localStorage
+ */
+function getAuthToken() {
+  return localStorage.getItem('librax_token');
+}
+
+/**
+ * ดึงข้อมูล User จาก localStorage
+ */
+function getCurrentUser() {
+  const userJson = localStorage.getItem('librax_user');
+  try {
+    return userJson ? JSON.parse(userJson) : null;
+  } catch (e) {
+    return null;
+  }
+}
+
+/**
+ * สร้าง Headers รวมทั้ง Authorization Bearer Token
+ */
+function getAuthHeaders(extraHeaders = {}) {
+  const headers = { ...extraHeaders };
+  const token = getAuthToken();
+  if (token) {
+    headers['Authorization'] = `Bearer ${token}`;
+  }
+  return headers;
+}
+
+/**
+ * จัดการเมื่อ Token หมดอายุหรือไม่ถูกต้อง (401)
+ */
+function handleUnauthorized() {
+  localStorage.removeItem('librax_token');
+  localStorage.removeItem('librax_user');
+  
+  // ตรวจสอบว่าไม่ได้อยู่ที่หน้า login อยู่แล้ว
+  if (!window.location.pathname.includes('login.html')) {
+    const isPagesDir = window.location.pathname.includes('/pages/');
+    const loginUrl = isPagesDir ? './login.html' : './pages/login.html';
+    window.location.href = loginUrl;
+  }
+}
+
 // === API Helper Functions ===
 
 /**
@@ -12,7 +60,16 @@ const API_BASE = 'http://localhost:3000/api';
  */
 async function apiGet(endpoint) {
   try {
-    const response = await fetch(`${API_BASE}${endpoint}`);
+    const response = await fetch(`${API_BASE}${endpoint}`, {
+      method: 'GET',
+      headers: getAuthHeaders()
+    });
+
+    if (response.status === 401) {
+      handleUnauthorized();
+      return { success: false, message: 'Session expired. Please login again.' };
+    }
+
     const data = await response.json();
     return data;
   } catch (error) {
@@ -28,9 +85,15 @@ async function apiPost(endpoint, body) {
   try {
     const response = await fetch(`${API_BASE}${endpoint}`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: getAuthHeaders({ 'Content-Type': 'application/json' }),
       body: JSON.stringify(body)
     });
+
+    if (response.status === 401 && !endpoint.includes('/auth/login')) {
+      handleUnauthorized();
+      return { success: false, message: 'Session expired. Please login again.' };
+    }
+
     const data = await response.json();
     return data;
   } catch (error) {
@@ -46,9 +109,15 @@ async function apiPut(endpoint, body) {
   try {
     const response = await fetch(`${API_BASE}${endpoint}`, {
       method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
+      headers: getAuthHeaders({ 'Content-Type': 'application/json' }),
       body: JSON.stringify(body)
     });
+
+    if (response.status === 401) {
+      handleUnauthorized();
+      return { success: false, message: 'Session expired. Please login again.' };
+    }
+
     const data = await response.json();
     return data;
   } catch (error) {
@@ -63,8 +132,15 @@ async function apiPut(endpoint, body) {
 async function apiDelete(endpoint) {
   try {
     const response = await fetch(`${API_BASE}${endpoint}`, {
-      method: 'DELETE'
+      method: 'DELETE',
+      headers: getAuthHeaders()
     });
+
+    if (response.status === 401) {
+      handleUnauthorized();
+      return { success: false, message: 'Session expired. Please login again.' };
+    }
+
     const data = await response.json();
     return data;
   } catch (error) {
@@ -258,7 +334,137 @@ function confirmAction(message) {
   return window.confirm(message);
 }
 
+// === Authentication & Route Guard ===
+
+/**
+ * ออกจากระบบ (Logout)
+ */
+function logout() {
+  if (confirmAction('Are you sure you want to sign out?')) {
+    localStorage.removeItem('librax_token');
+    localStorage.removeItem('librax_user');
+    const isPagesDir = window.location.pathname.includes('/pages/');
+    const loginUrl = isPagesDir ? './login.html' : './pages/login.html';
+    window.location.href = loginUrl;
+  }
+}
+
+/**
+ * Route Guard: ตรวจสอบว่าผู้ใช้มี Token หรือไม่ และมีสิทธิ์เข้าถึงหน้านั้นๆ หรือไม่
+ */
+function checkAuthRouteGuard() {
+  const pathname = window.location.pathname;
+  const isLoginPage = pathname.includes('login.html');
+  if (isLoginPage) return;
+
+  const token = getAuthToken();
+  const user = getCurrentUser();
+
+  // 1. ถ้าไม่มี Token หรือข้อมูล User -> Redirect ไปหน้า Login
+  if (!token || !user) {
+    const isPagesDir = pathname.includes('/pages/');
+    const loginUrl = isPagesDir ? './login.html' : './pages/login.html';
+    window.location.href = loginUrl;
+    return;
+  }
+
+  // 2. Page Access Matrix ตาม Role
+  const role = user.role;
+  const isStaffOrAdmin = role === 'Admin' || role === 'Staff';
+
+  // ตรวจสอบหน้าที่กำลังเปิดอยู่
+  const isDashboard = pathname === '/' || pathname.endsWith('index.html');
+  const isMembersPage = pathname.includes('members.html');
+  const isBorrowPage = pathname.includes('borrow.html');
+  const isHistoryPage = pathname.includes('history.html');
+
+  // หากเป็น Student หรือ Teacher พยายามเข้าหน้า Admin (Dashboard, Members, Borrow, History) -> บล็อกและดีดไปหน้า Books
+  if (!isStaffOrAdmin && (isDashboard || isMembersPage || isBorrowPage || isHistoryPage)) {
+    const isPagesDir = pathname.includes('/pages/');
+    const booksUrl = isPagesDir ? './books.html' : './pages/books.html';
+    window.location.href = booksUrl;
+    return;
+  }
+
+  // 3. ปรับแต่งเมนู Sidebar ตามสิทธิ์ Role ของผู้ใช้
+  applyRoleBasedNavigation(user);
+
+  // 4. แสดงข้อมูลผู้ใช้และปุ่ม Logout ใน Sidebar
+  renderSidebarUserProfile();
+}
+
+/**
+ * ซ่อน/แสดงเมนูใน Sidebar ตาม Role
+ */
+function applyRoleBasedNavigation(user) {
+  const isStaffOrAdmin = user && (user.role === 'Admin' || user.role === 'Staff');
+  const links = document.querySelectorAll('.sidebar-link');
+
+  links.forEach(link => {
+    const href = link.getAttribute('href') || '';
+    const isDashboardLink = href.includes('index.html');
+    const isMembersLink = href.includes('members.html');
+    const isBorrowLink = href.includes('borrow.html');
+    const isHistoryLink = href.includes('history.html');
+
+    // ถ้าไม่ใช่ Staff หรือ Admin ให้ซ่อนเมนูจัดการระบบทั้งหมด เหลือแค่ Books
+    if (!isStaffOrAdmin && (isDashboardLink || isMembersLink || isBorrowLink || isHistoryLink)) {
+      link.style.display = 'none';
+    }
+  });
+
+  // ซ่อนปุ่ม Action บนหัวเว็บ Dashboard หรือหน้าอื่นหากไม่ใช่ Admin/Staff
+  if (!isStaffOrAdmin) {
+    const newLoanBtn = document.querySelector('a[href*="borrow.html"]');
+    if (newLoanBtn && !newLoanBtn.classList.contains('sidebar-link')) {
+      newLoanBtn.style.display = 'none';
+    }
+  }
+}
+
+/**
+ * แสดงข้อมูลโปรไฟล์ผู้ใช้และปุ่ม Sign Out ใน Sidebar ด้านล่าง
+ */
+function renderSidebarUserProfile() {
+  const sidebar = document.getElementById('sidebar');
+  if (!sidebar) return;
+
+  const user = getCurrentUser();
+  if (!user) return;
+
+  // ตรวจสอบว่ามีกล่อง user-profile อยู่แล้วหรือไม่
+  let userContainer = document.getElementById('sidebarUserSection');
+  if (!userContainer) {
+    userContainer = document.createElement('div');
+    userContainer.id = 'sidebarUserSection';
+    userContainer.className = 'mt-auto pt-3 border-t border-zinc-100 flex flex-col gap-2';
+    sidebar.appendChild(userContainer);
+  }
+
+  const roleBadgeClass = user.role === 'Admin' ? 'bg-indigo-50 text-indigo-700 border-indigo-200/80'
+    : user.role === 'Staff' ? 'bg-emerald-50 text-emerald-700 border-emerald-200/80'
+    : 'bg-zinc-100 text-zinc-700 border-zinc-200';
+
+  userContainer.innerHTML = `
+    <div class="flex items-center justify-between px-2 py-1.5 rounded-lg bg-zinc-50 border border-zinc-150">
+      <div class="flex items-center gap-2 min-w-0">
+        ${getAvatarChip(`${user.first_name || ''} ${user.last_name || ''}`, user.member_code || user.email)}
+        <div class="min-w-0">
+          <p class="text-xs font-semibold text-zinc-900 truncate">${user.first_name || ''} ${user.last_name || ''}</p>
+          <span class="inline-block text-[10px] font-mono px-1.5 py-0.5 rounded border ${roleBadgeClass}">${user.role || 'User'}</span>
+        </div>
+      </div>
+      <button onclick="logout()" class="p-1.5 text-zinc-400 hover:text-rose-600 hover:bg-rose-50 rounded-md transition-colors" title="Sign Out">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+        </svg>
+      </button>
+    </div>
+  `;
+}
+
 // === Initialize ===
 document.addEventListener('DOMContentLoaded', () => {
+  checkAuthRouteGuard();
   setActiveSidebarLink();
 });
