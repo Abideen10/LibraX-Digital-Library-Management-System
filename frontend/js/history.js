@@ -43,6 +43,8 @@ function renderHistoryTable(borrowings) {
         <tr>
           <th style="width: 75px;">ID</th>
           <th>Member</th>
+          <th>Member code</th>
+          <th>Member type</th>
           <th class="whitespace-nowrap" style="width: 120px;">Borrow Date</th>
           <th class="whitespace-nowrap" style="width: 120px;">Due Date</th>
           <th style="width: 120px;">Status</th>
@@ -59,15 +61,12 @@ function renderHistoryTable(borrowings) {
               <div class="flex items-center gap-2.5">
                 ${getAvatarChip(`${b.first_name} ${b.last_name}`, b.member_code)}
                 <div>
-                  <div class="font-semibold text-xs text-slate-900">${b.first_name} ${b.last_name}</div>
-                  <div class="text-[11px] font-mono text-slate-400 mt-0.5 flex items-center gap-1.5">
-                    <span>${b.member_code}</span>
-                    <span>·</span>
-                    ${getMemberTypeBadge(b.member_type)}
-                  </div>
+                  <div class="font-semibold text-zinc-800">${b.first_name} ${b.last_name}</div>
                 </div>
               </div>
             </td>
+            <td class="text-xs text-zinc-600">${b.member_code}</td>
+            <td class="text-xs text-zinc-600">${getMemberTypeBadge(b.member_type)}</td>
             <td class="text-xs text-zinc-600">${formatDate(b.borrow_date)}</td>
             <td class="text-xs text-zinc-600">${formatDate(b.due_date)}</td>
             <td>${getStatusBadge(b.status)}</td>

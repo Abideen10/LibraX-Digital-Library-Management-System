@@ -64,6 +64,7 @@ async function createBorrowing(memberId, borrowDate, dueDate, bookIds) {
 
   try {
     await connection.beginTransaction();
+    // ปิดระบบบันทึกอัตโนมัติชั่วคราว: โดยปกติ MySQL จะเปิดระบบ Auto-Commit ไว้ คือเมื่อส่งคำสั่ง INSERT หรือ UPDATE ข้อมูลจะถูกเซฟลงตารางจริงทันที แต่คำสั่ง beginTransaction() จะสั่งให้ฐานข้อมูล "พักไว้ก่อน อย่าเพิ่งบันทึกลงดิสก์จริง" จนกว่าจะตรวจสอบจนแน่ใจว่าทุกคำสั่งทำงานสำเร็จครบถ้วน
 
     // สร้าง borrowing record
     const [borrowResult] = await connection.execute(
