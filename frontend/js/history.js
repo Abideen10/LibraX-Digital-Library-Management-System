@@ -42,9 +42,9 @@ function renderHistoryTable(borrowings) {
       <thead>
         <tr>
           <th style="width: 75px;">ID</th>
+          <th>Code</th>
           <th>Member</th>
-          <th>Member code</th>
-          <th>Member type</th>
+          <th>Type</th>
           <th class="whitespace-nowrap" style="width: 120px;">Borrow Date</th>
           <th class="whitespace-nowrap" style="width: 120px;">Due Date</th>
           <th style="width: 120px;">Status</th>
@@ -58,14 +58,14 @@ function renderHistoryTable(borrowings) {
               <span class="px-2 py-0.5 rounded bg-slate-100/90 text-slate-600 font-mono text-[11px] font-semibold border border-slate-200/80">#${b.id}</span>
             </td>
             <td>
+              <span class="px-2 py-0.5 rounded bg-slate-100/90 text-slate-600 font-mono text-[11px] font-semibold border border-slate-200/80">${b.member_code}</span>
+            </td>
+            <td>
               <div class="flex items-center gap-2.5">
                 ${getAvatarChip(`${b.first_name} ${b.last_name}`, b.member_code)}
-                <div>
-                  <div class="font-semibold text-zinc-800">${b.first_name} ${b.last_name}</div>
-                </div>
+                <div class="font-semibold text-zinc-800">${b.first_name} ${b.last_name}</div>
               </div>
             </td>
-            <td class="text-xs text-zinc-600">${b.member_code}</td>
             <td class="text-xs text-zinc-600">${getMemberTypeBadge(b.member_type)}</td>
             <td class="text-xs text-zinc-600">${formatDate(b.borrow_date)}</td>
             <td class="text-xs text-zinc-600">${formatDate(b.due_date)}</td>
