@@ -5,18 +5,18 @@
 
 const { pool } = require('../connection');
 
-// ดึงรายการยืมทั้งหมด (JOIN กับ member เพื่อแสดงชื่อ)
+// ดึงรายการยืมทั้งหมด (JOIN กับ user เพื่อแสดงชื่อ)
 async function getAllBorrowings(search = '', status = '') {
   let sql = `
-    SELECT b.*, m.member_code, m.first_name, m.last_name, m.member_type
+    SELECT b.*, u.member_code, u.first_name, u.last_name, u.role as member_type, u.role
     FROM borrowings b
-    JOIN members m ON b.member_id = m.id
+    JOIN users u ON b.user_id = u.id
     WHERE 1=1
   `;
   const params = [];
 
   if (search) {
-    sql += ' AND (m.first_name LIKE ? OR m.last_name LIKE ? OR m.member_code LIKE ?)';
+    sql += ' AND (u.first_name LIKE ? OR u.last_name LIKE ? OR u.member_code LIKE ?)';
     const searchTerm = `%${search}%`;
     params.push(searchTerm, searchTerm, searchTerm);
   }
@@ -36,9 +36,9 @@ async function getAllBorrowings(search = '', status = '') {
 async function getBorrowingById(id) {
   // ดึงข้อมูลรายการยืมหลัก
   const [borrowings] = await pool.execute(`
-    SELECT b.*, m.member_code, m.first_name, m.last_name, m.member_type, m.email
+    SELECT b.*, u.member_code, u.first_name, u.last_name, u.role as member_type, u.role, u.email
     FROM borrowings b
-    JOIN members m ON b.member_id = m.id
+    JOIN users u ON b.user_id = u.id
     WHERE b.id = ?
   `, [id]);
 
@@ -68,7 +68,7 @@ async function createBorrowing(memberId, borrowDate, dueDate, bookIds) {
 
     // สร้าง borrowing record
     const [borrowResult] = await connection.execute(
-      'INSERT INTO borrowings (member_id, borrow_date, due_date, status) VALUES (?, ?, ?, ?)',
+      'INSERT INTO borrowings (user_id, borrow_date, due_date, status) VALUES (?, ?, ?, ?)',
       [memberId, borrowDate, dueDate, 'Borrowed']
     );
     const borrowingId = borrowResult.insertId;
@@ -165,9 +165,9 @@ async function getBorrowingStats() {
 // ดึงรายการยืมล่าสุด
 async function getRecentBorrowings(limit = 5) {
   const [rows] = await pool.execute(`
-    SELECT b.*, m.member_code, m.first_name, m.last_name
+    SELECT b.*, u.member_code, u.first_name, u.last_name
     FROM borrowings b
-    JOIN members m ON b.member_id = m.id
+    JOIN users u ON b.user_id = u.id
     ORDER BY b.created_at DESC
     LIMIT ?
   `, [limit]);
@@ -177,10 +177,10 @@ async function getRecentBorrowings(limit = 5) {
 // ดึงรายการยืมตามสมาชิก
 async function getBorrowingsByMemberId(memberId) {
   const [rows] = await pool.execute(`
-    SELECT b.*, m.member_code, m.first_name, m.last_name
+    SELECT b.*, u.member_code, u.first_name, u.last_name
     FROM borrowings b
-    JOIN members m ON b.member_id = m.id
-    WHERE b.member_id = ?
+    JOIN users u ON b.user_id = u.id
+    WHERE b.user_id = ?
     ORDER BY b.created_at DESC
   `, [memberId]);
   return rows;

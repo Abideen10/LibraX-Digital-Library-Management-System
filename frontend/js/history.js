@@ -63,7 +63,7 @@ function renderHistoryTable(borrowings) {
             <td>
               <div class="flex items-center gap-2.5">
                 ${getAvatarChip(`${b.first_name} ${b.last_name}`, b.member_code)}
-                <div class="font-semibold text-zinc-800">${b.first_name} ${b.last_name}</div>
+                <div class="font-semibold text-zinc-600">${b.first_name} ${b.last_name}</div>
               </div>
             </td>
             <td class="text-xs text-zinc-600">${getMemberTypeBadge(b.member_type)}</td>

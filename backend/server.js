@@ -15,6 +15,10 @@ const { sendJson, getPathname } = require('./utils/helpers');
 const { handleBooksRoutes } = require('./routes/books');
 const { handleMembersRoutes } = require('./routes/members');
 const { handleBorrowingsRoutes } = require('./routes/borrowings');
+const { handleAuthRoutes } = require('./routes/auth');
+
+// Import Middleware
+const { verifyAuth } = require('./utils/authMiddleware');
 
 const PORT = process.env.PORT || 3000;
 
@@ -75,7 +79,7 @@ async function handleRequest(req, res) {
     res.writeHead(204, {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-      'Access-Control-Allow-Headers': 'Content-Type',
+      'Access-Control-Allow-Headers': 'Content-Type, Authorization',
       'Access-Control-Max-Age': '86400'
     });
     res.end();
@@ -84,34 +88,41 @@ async function handleRequest(req, res) {
 
   // === API Routes ===
   if (pathname.startsWith('/api/')) {
-    // ลอง Match Route ทีละกลุ่ม
-    // Dashboard
-    if (pathname === '/api/dashboard') {
-      const result = handleBorrowingsRoutes(req, res, pathname, method);
+    // Auth API (ไม่ต้องการ Token สำหรับ Login)
+    if (pathname.startsWith('/api/auth')) {
+      const result = handleAuthRoutes(req, res, pathname, method);
       if (result !== false) return;
     }
 
-    // Books API
-    if (pathname.startsWith('/api/books')) {
-      const result = handleBooksRoutes(req, res, pathname, method);
-      if (result !== false) return;
-    }
+    // ===== ทุก Route ด้านล่างนี้ต้องผ่านการตรวจสอบ Token ก่อน =====
+    return verifyAuth(req, res, () => {
+      // Dashboard
+      if (pathname === '/api/dashboard') {
+        const result = handleBorrowingsRoutes(req, res, pathname, method);
+        if (result !== false) return;
+      }
 
-    // Members API
-    if (pathname.startsWith('/api/members')) {
-      const result = handleMembersRoutes(req, res, pathname, method);
-      if (result !== false) return;
-    }
+      // Books API
+      if (pathname.startsWith('/api/books')) {
+        const result = handleBooksRoutes(req, res, pathname, method);
+        if (result !== false) return;
+      }
 
-    // Borrowings API
-    if (pathname.startsWith('/api/borrowings')) {
-      const result = handleBorrowingsRoutes(req, res, pathname, method);
-      if (result !== false) return;
-    }
+      // Members API
+      if (pathname.startsWith('/api/members')) {
+        const result = handleMembersRoutes(req, res, pathname, method);
+        if (result !== false) return;
+      }
 
-    // ไม่ตรง API Route ใด ๆ
-    sendJson(res, 404, { success: false, message: 'API endpoint not found' });
-    return;
+      // Borrowings API
+      if (pathname.startsWith('/api/borrowings')) {
+        const result = handleBorrowingsRoutes(req, res, pathname, method);
+        if (result !== false) return;
+      }
+
+      // ไม่ตรง API Route ใด ๆ
+      sendJson(res, 404, { success: false, message: 'API endpoint not found' });
+    });
   }
 
   // === Static File Serving ===

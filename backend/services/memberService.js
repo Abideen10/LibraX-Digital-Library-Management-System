@@ -79,9 +79,10 @@ function validateMemberData(data) {
     throw new Error('Invalid email format');
   }
 
-  const validTypes = ['Student', 'Teacher', 'Staff'];
-  if (!data.member_type || !validTypes.includes(data.member_type)) {
-    throw new Error('Member type must be Student, Teacher, or Staff');
+  const validTypes = ['Admin', 'Staff', 'Teacher', 'Student'];
+  const userRole = data.role || data.member_type;
+  if (!userRole || !validTypes.includes(userRole)) {
+    throw new Error('Role must be Admin, Staff, Teacher, or Student');
   }
 }
 

@@ -8,11 +8,19 @@
     "dev": "node --watch backend/server.js",
     "seed": "node backend/database/seed.js"
   },
-  "keywords": ["library", "management", "university", "nodejs", "mysql"],
+  "keywords": [
+    "library",
+    "management",
+    "university",
+    "nodejs",
+    "mysql"
+  ],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bcryptjs": "^3.0.3",
     "dotenv": "^16.4.5",
+    "jsonwebtoken": "^9.0.3",
     "mysql2": "^3.9.7"
   }
 }

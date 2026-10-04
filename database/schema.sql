@@ -40,33 +40,34 @@ CREATE TABLE IF NOT EXISTS books (
 
 
 -- ============================================
--- Table: members
--- เก็บข้อมูลสมาชิกห้องสมุด
+-- Table: users
+-- เก็บข้อมูลผู้ใช้งานระบบและสมาชิกห้องสมุด
 -- ============================================
-CREATE TABLE IF NOT EXISTS members (
+CREATE TABLE IF NOT EXISTS users (
   id INT AUTO_INCREMENT PRIMARY KEY,
   member_code VARCHAR(20) NOT NULL UNIQUE,
   first_name VARCHAR(100) NOT NULL,
   last_name VARCHAR(100) NOT NULL,
   email VARCHAR(255) NOT NULL UNIQUE,
+  password_hash VARCHAR(255) DEFAULT NULL,
   phone VARCHAR(20) DEFAULT NULL,
-  member_type ENUM('Student', 'Teacher', 'Staff') NOT NULL DEFAULT 'Student',
+  role ENUM('Admin', 'Staff', 'Teacher', 'Student') NOT NULL DEFAULT 'Student',
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 
-  INDEX idx_members_code (member_code),
-  INDEX idx_members_name (first_name, last_name),
-  INDEX idx_members_type (member_type)
+  INDEX idx_users_code (member_code),
+  INDEX idx_users_name (first_name, last_name),
+  INDEX idx_users_role (role)
 ) ENGINE=InnoDB;
 
 
 -- ============================================
 -- Table: borrowings
--- เก็บข้อมูลรายการยืมหนังสือ (1 รายการยืม = 1 สมาชิก)
+-- เก็บข้อมูลรายการยืมหนังสือ (1 รายการยืม = 1 สมาชิก/ผู้ใช้)
 -- ============================================
 CREATE TABLE IF NOT EXISTS borrowings (
   id INT AUTO_INCREMENT PRIMARY KEY,
-  member_id INT NOT NULL,
+  user_id INT NOT NULL,
   borrow_date DATE NOT NULL,
   due_date DATE NOT NULL,
   status ENUM('Borrowed', 'Returned', 'Overdue') NOT NULL DEFAULT 'Borrowed',
@@ -74,12 +75,12 @@ CREATE TABLE IF NOT EXISTS borrowings (
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 
-  CONSTRAINT fk_borrowings_member
-    FOREIGN KEY (member_id) REFERENCES members(id)
+  CONSTRAINT fk_borrowings_user
+    FOREIGN KEY (user_id) REFERENCES users(id)
     ON DELETE RESTRICT
     ON UPDATE CASCADE,
 
-  INDEX idx_borrowings_member (member_id),
+  INDEX idx_borrowings_user (user_id),
   INDEX idx_borrowings_status (status),
   INDEX idx_borrowings_borrow_date (borrow_date),
   INDEX idx_borrowings_due_date (due_date)
