@@ -292,15 +292,14 @@ function showLoading(containerId) {
     container.innerHTML = '<div class="text-center py-12"><div class="spinner mx-auto"></div><p class="text-gray-400 mt-3 text-sm">Loading...</p></div>';
   }
 }
-
-// === Sidebar Navigation ===
+// === Navbar Navigation ===
 
 /**
- * Set Active Sidebar Link ตาม path ปัจจุบัน
+ * Set Active Nav Link ตาม path ปัจจุบัน
  */
-function setActiveSidebarLink() {
+function setActiveNavLink() {
   const currentPath = window.location.pathname;
-  const links = document.querySelectorAll('.sidebar-link');
+  const links = document.querySelectorAll('.nav-link, .mobile-nav-link, .sidebar-link');
 
   links.forEach(link => {
     link.classList.remove('active');
@@ -309,23 +308,19 @@ function setActiveSidebarLink() {
       link.classList.add('active');
     }
     // สำหรับ Dashboard (index.html หรือ /)
-    if ((currentPath === '/' || currentPath.endsWith('index.html')) && href === './index.html') {
+    if ((currentPath === '/' || currentPath.endsWith('index.html')) && (href === './index.html' || href === '../index.html')) {
       link.classList.add('active');
     }
   });
 }
 
 /**
- * Toggle Sidebar สำหรับ Mobile
+ * Toggle Mobile Nav Menu Dropdown
  */
-function toggleSidebar() {
-  const sidebar = document.getElementById('sidebar');
-  const overlay = document.getElementById('sidebarOverlay');
-  if (sidebar) {
-    sidebar.classList.toggle('open');
-  }
-  if (overlay) {
-    overlay.classList.toggle('hidden');
+function toggleMobileMenu() {
+  const menu = document.getElementById('mobileNavMenu');
+  if (menu) {
+    menu.classList.toggle('hidden');
   }
 }
 
@@ -386,19 +381,19 @@ function checkAuthRouteGuard() {
     return;
   }
 
-  // 3. ปรับแต่งเมนู Sidebar ตามสิทธิ์ Role ของผู้ใช้
+  // 3. ปรับแต่งเมนู Navbar ตามสิทธิ์ Role ของผู้ใช้
   applyRoleBasedNavigation(user);
 
-  // 4. แสดงข้อมูลผู้ใช้และปุ่ม Logout ใน Sidebar
-  renderSidebarUserProfile();
+  // 4. แสดงข้อมูลผู้ใช้และปุ่ม Logout บน Navbar
+  renderNavUserProfile();
 }
 
 /**
- * ซ่อน/แสดงเมนูใน Sidebar ตาม Role
+ * ซ่อน/แสดงเมนูใน Navbar ตาม Role
  */
 function applyRoleBasedNavigation(user) {
   const isStaffOrAdmin = user && (user.role === 'Admin' || user.role === 'Staff');
-  const links = document.querySelectorAll('.sidebar-link');
+  const links = document.querySelectorAll('.nav-link, .mobile-nav-link, .sidebar-link');
 
   links.forEach(link => {
     const href = link.getAttribute('href') || '';
@@ -416,42 +411,30 @@ function applyRoleBasedNavigation(user) {
   // ซ่อนปุ่ม Action บนหัวเว็บ Dashboard หรือหน้าอื่นหากไม่ใช่ Admin/Staff
   if (!isStaffOrAdmin) {
     const newLoanBtn = document.querySelector('a[href*="borrow.html"]');
-    if (newLoanBtn && !newLoanBtn.classList.contains('sidebar-link')) {
+    if (newLoanBtn && !newLoanBtn.classList.contains('nav-link') && !newLoanBtn.classList.contains('mobile-nav-link')) {
       newLoanBtn.style.display = 'none';
     }
   }
 }
 
 /**
- * แสดงข้อมูลโปรไฟล์ผู้ใช้และปุ่ม Sign Out ใน Sidebar ด้านล่าง
+ * แสดงข้อมูลโปรไฟล์ผู้ใช้และปุ่ม Sign Out บน Navbar
  */
-function renderSidebarUserProfile() {
-  const sidebar = document.getElementById('sidebar');
-  if (!sidebar) return;
-
+function renderNavUserProfile() {
   const user = getCurrentUser();
   if (!user) return;
-
-  // ตรวจสอบว่ามีกล่อง user-profile อยู่แล้วหรือไม่
-  let userContainer = document.getElementById('sidebarUserSection');
-  if (!userContainer) {
-    userContainer = document.createElement('div');
-    userContainer.id = 'sidebarUserSection';
-    userContainer.className = 'mt-auto pt-3 border-t border-zinc-100 flex flex-col gap-2';
-    sidebar.appendChild(userContainer);
-  }
 
   const roleBadgeClass = user.role === 'Admin' ? 'bg-indigo-50 text-indigo-700 border-indigo-200/80'
     : user.role === 'Staff' ? 'bg-emerald-50 text-emerald-700 border-emerald-200/80'
     : 'bg-zinc-100 text-zinc-700 border-zinc-200';
 
-  userContainer.innerHTML = `
-    <div class="flex items-center justify-between px-2 py-1.5 rounded-lg bg-zinc-50 border border-zinc-150">
-      <div class="flex items-center gap-2 min-w-0">
+  const userProfileHtml = `
+    <div class="flex items-center gap-3">
+      <div class="flex items-center gap-2 pl-2">
         ${getAvatarChip(`${user.first_name || ''} ${user.last_name || ''}`, user.member_code || user.email)}
-        <div class="min-w-0">
-          <p class="text-xs font-semibold text-zinc-900 truncate">${user.first_name || ''} ${user.last_name || ''}</p>
-          <span class="inline-block text-[10px] font-mono px-1.5 py-0.5 rounded border ${roleBadgeClass}">${user.role || 'User'}</span>
+        <div class="hidden sm:block text-left leading-tight">
+          <p class="text-xs font-semibold text-zinc-900 truncate max-w-[120px]">${user.first_name || ''} ${user.last_name || ''}</p>
+          <span class="inline-block text-[10px] font-mono px-1.5 py-0.2 rounded border ${roleBadgeClass}">${user.role || 'User'}</span>
         </div>
       </div>
       <button onclick="logout()" class="p-1.5 text-zinc-400 hover:text-rose-600 hover:bg-rose-50 rounded-md transition-colors" title="Sign Out">
@@ -461,10 +444,36 @@ function renderSidebarUserProfile() {
       </button>
     </div>
   `;
+
+  // อัปเดตใน Desktop Navbar
+  const navContainer = document.getElementById('navUserSection');
+  if (navContainer) {
+    navContainer.innerHTML = userProfileHtml;
+  }
+
+  // อัปเดตใน Mobile Nav Drawer/Menu (ถ้ามี)
+  const mobileContainer = document.getElementById('mobileUserSection');
+  if (mobileContainer) {
+    mobileContainer.innerHTML = `
+      <div class="flex items-center justify-between p-3 rounded-lg bg-zinc-50 border border-zinc-200/70">
+        <div class="flex items-center gap-2.5">
+          ${getAvatarChip(`${user.first_name || ''} ${user.last_name || ''}`, user.member_code || user.email)}
+          <div>
+            <p class="text-xs font-semibold text-zinc-900">${user.first_name || ''} ${user.last_name || ''}</p>
+            <span class="inline-block text-[10px] font-mono px-1.5 py-0.2 rounded border ${roleBadgeClass}">${user.role || 'User'}</span>
+          </div>
+        </div>
+        <button onclick="logout()" class="px-2.5 py-1 text-xs font-medium text-rose-600 hover:bg-rose-50 rounded border border-rose-200 flex items-center gap-1">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+          Sign Out
+        </button>
+      </div>
+    `;
+  }
 }
 
 // === Initialize ===
 document.addEventListener('DOMContentLoaded', () => {
   checkAuthRouteGuard();
-  setActiveSidebarLink();
+  setActiveNavLink();
 });

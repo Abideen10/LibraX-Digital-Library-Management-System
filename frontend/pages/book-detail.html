@@ -12,79 +12,105 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="../css/style.css">
 </head>
-<body class="bg-[#f8fafc] min-h-screen text-slate-900">
-  <div class="flex min-h-screen">
+<body class="bg-[#f8fafc] min-h-screen text-slate-900 flex flex-col">
 
-    <!-- Clean Minimalist Sidebar -->
-    <aside id="sidebar" class="sidebar flex-shrink-0 fixed lg:sticky top-0 h-screen overflow-y-auto z-40 flex flex-col justify-between p-3">
-      <div>
-        <!-- Brand Header -->
-        <div class="px-2 py-3 mb-2 border-b border-zinc-100">
-          <div class="flex items-center gap-2.5">
-            <img src="../assets/images/logo-icon.png" alt="LibraX" class="w-10 h-10 rounded-lg object-contain border border-zinc-200/80 bg-white p-1.5 shadow-xs">
-            <div>
-              <h1 class="text-sm font-bold text-zinc-900 tracking-tight leading-none">LibraX</h1>
-              <span class="text-xs text-zinc-400 font-medium">Digital Library</span>
+  <!-- Top Navbar -->
+  <header class="navbar">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-14">
+        
+        <!-- Brand & Nav Links -->
+        <div class="flex items-center gap-6 lg:gap-8">
+          <a href="../index.html" class="flex items-center gap-2.5">
+            <img src="../assets/images/logo-icon.png" alt="LibraX" class="w-8 h-8 rounded-lg object-contain border border-zinc-200/80 bg-white p-1 shadow-xs">
+            <div class="leading-none">
+              <span class="text-sm font-bold text-zinc-900 tracking-tight">LibraX</span>
+              <span class="hidden sm:inline-block ml-1 text-[11px] text-zinc-400 font-medium">Digital Library</span>
             </div>
-          </div>
+          </a>
+
+          <!-- Desktop Navigation -->
+          <nav class="hidden md:flex items-center gap-1">
+            <a href="../index.html" class="nav-link">
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+              Dashboard
+            </a>
+            <a href="./books.html" class="nav-link active">
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+              Books
+            </a>
+            <a href="./members.html" class="nav-link">
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+              Members
+            </a>
+            <a href="./borrow.html" class="nav-link">
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg>
+              Borrow & Return
+            </a>
+            <a href="./history.html" class="nav-link">
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+              History
+            </a>
+          </nav>
         </div>
 
-        <!-- Navigation Links -->
-        <nav class="space-y-0.5">
-          <a href="../index.html" class="sidebar-link">
-            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
-            Dashboard
-          </a>
-          <a href="./books.html" class="sidebar-link active">
-            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
-            Books
-          </a>
-          <a href="./members.html" class="sidebar-link">
-            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
-            Members
-          </a>
-          <a href="./borrow.html" class="sidebar-link">
-            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg>
-            Borrow & Return
-          </a>
-          <a href="./history.html" class="sidebar-link">
-            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-            History
-          </a>
-        </nav>
-      </div>
-
-      <div class="px-3 py-2 rounded-md bg-zinc-50 border border-zinc-150 text-xs text-zinc-500">
-        <span class="font-medium text-zinc-700">Catalog Module</span>
-      </div>
-    </aside>
-
-    <div id="sidebarOverlay" class="hidden fixed inset-0 bg-black/20 z-30 lg:hidden" onclick="toggleSidebar()"></div>
-
-    <!-- Main Workspace -->
-    <main class="flex-1 flex flex-col min-w-0">
-      <header class="bg-white border-b border-zinc-200/80 px-6 h-[50px] flex items-center justify-between sticky top-0 z-20">
-        <div class="flex items-center gap-3">
-          <button class="lg:hidden p-1 rounded hover:bg-zinc-100 text-zinc-500" onclick="toggleSidebar()">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
-          </button>
-          <a href="./books.html" class="btn btn-secondary btn-sm gap-1.5 text-zinc-600">
+        <!-- Right Side: User Profile & Mobile Menu Toggle -->
+        <div class="flex items-center gap-2 sm:gap-3">
+          <a href="./books.html" class="btn btn-secondary btn-sm gap-1.5 text-zinc-600 hidden sm:inline-flex">
             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
             Back to Catalog
           </a>
-        </div>
-        <span class="text-xs text-zinc-400 font-mono">Volume Detail</span>
-      </header>
-
-      <div class="p-6 w-full">
-        <div id="bookDetailPage">
-          <div class="text-center py-12">
-            <div class="spinner mx-auto"></div>
+          <div id="navUserSection" class="flex items-center">
+            <!-- Rendered by JS -->
           </div>
+          <!-- Mobile Menu Button -->
+          <button type="button" onclick="toggleMobileMenu()" class="md:hidden p-1.5 rounded-lg text-zinc-500 hover:text-zinc-700 hover:bg-zinc-100 transition-colors" aria-label="Toggle menu">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+          </button>
         </div>
+
       </div>
-    </main>
-  </div>
+    </div>
+
+    <!-- Mobile Navigation Dropdown -->
+    <div id="mobileNavMenu" class="hidden md:hidden border-t border-zinc-200/80 bg-white px-4 pt-2 pb-3 space-y-1">
+      <a href="../index.html" class="mobile-nav-link">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+        Dashboard
+      </a>
+      <a href="./books.html" class="mobile-nav-link active">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+        Books
+      </a>
+      <a href="./members.html" class="mobile-nav-link">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+        Members
+      </a>
+      <a href="./borrow.html" class="mobile-nav-link">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg>
+        Borrow & Return
+      </a>
+      <a href="./history.html" class="mobile-nav-link">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        History
+      </a>
+      <div class="pt-2 border-t border-zinc-100 sm:hidden">
+        <a href="./books.html" class="btn btn-secondary btn-sm w-full flex justify-center items-center gap-1.5">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
+          Back to Catalog
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content Workspace -->
+  <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 space-y-6">
+    <div id="bookDetailPage">
+      <div class="text-center py-12">
+        <div class="spinner mx-auto"></div>
+      </div>
+    </div>
+  </main>
 
   <script src="../js/app.js"></script>
   <script>
