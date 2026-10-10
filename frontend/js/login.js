@@ -5,7 +5,7 @@
 
 document.addEventListener('DOMContentLoaded', () => {
   // หากผู้ใช้มี Token ที่ยังไม่หมดอายุอยู่ในระบบแล้ว ให้ Redirect ไปหน้า Dashboard ทันที
-  const existingToken = localStorage.getItem('librax_token');
+  const existingToken = sessionStorage.getItem('librax_token');
   if (existingToken) {
     window.location.href = '../index.html';
   }
@@ -59,9 +59,9 @@ async function handleLoginSubmit(event) {
     const result = await apiPost('/auth/login', { email, password });
 
     if (result.success && result.data && result.data.token) {
-      // 1. บันทึก Token และข้อมูล User ลงใน localStorage
-      localStorage.setItem('librax_token', result.data.token);
-      localStorage.setItem('librax_user', JSON.stringify(result.data.user));
+      // 1. บันทึก Token และข้อมูล User ลงใน sessionStorage
+      sessionStorage.setItem('librax_token', result.data.token);
+      sessionStorage.setItem('librax_user', JSON.stringify(result.data.user));
 
       // 2. แสดง Toast แจ้งเตือนสำเร็จ
       if (typeof showToast === 'function') {

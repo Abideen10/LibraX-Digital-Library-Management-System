@@ -8,7 +8,7 @@ const jwt = require('jsonwebtoken');
 const userQueries = require('../database/queries/userQueries');
 
 const JWT_SECRET = process.env.JWT_SECRET || 'librax_super_secret_jwt_key_2026';
-const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '24h';
+const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '30m';
 
 // Login: ตรวจสอบ email และ password แล้วสร้าง Token
 async function login(email, password) {

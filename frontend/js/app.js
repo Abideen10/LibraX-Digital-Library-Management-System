@@ -8,17 +8,17 @@ const API_BASE = 'http://localhost:3000/api';
 // === Authentication Helpers ===
 
 /**
- * ดึง JWT Token จาก localStorage
+ * ดึง JWT Token จาก sessionStorage
  */
 function getAuthToken() {
-  return localStorage.getItem('librax_token');
+  return sessionStorage.getItem('librax_token');
 }
 
 /**
- * ดึงข้อมูล User จาก localStorage
+ * ดึงข้อมูล User จาก sessionStorage
  */
 function getCurrentUser() {
-  const userJson = localStorage.getItem('librax_user');
+  const userJson = sessionStorage.getItem('librax_user');
   try {
     return userJson ? JSON.parse(userJson) : null;
   } catch (e) {
@@ -42,8 +42,8 @@ function getAuthHeaders(extraHeaders = {}) {
  * จัดการเมื่อ Token หมดอายุหรือไม่ถูกต้อง (401)
  */
 function handleUnauthorized() {
-  localStorage.removeItem('librax_token');
-  localStorage.removeItem('librax_user');
+  sessionStorage.removeItem('librax_token');
+  sessionStorage.removeItem('librax_user');
   
   // ตรวจสอบว่าไม่ได้อยู่ที่หน้า login อยู่แล้ว
   if (!window.location.pathname.includes('login.html')) {
@@ -336,8 +336,8 @@ function confirmAction(message) {
  */
 function logout() {
   if (confirmAction('Are you sure you want to sign out?')) {
-    localStorage.removeItem('librax_token');
-    localStorage.removeItem('librax_user');
+    sessionStorage.removeItem('librax_token');
+    sessionStorage.removeItem('librax_user');
     const isPagesDir = window.location.pathname.includes('/pages/');
     const loginUrl = isPagesDir ? './login.html' : './pages/login.html';
     window.location.href = loginUrl;
