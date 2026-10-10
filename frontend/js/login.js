@@ -50,6 +50,13 @@ async function handleLoginSubmit(event) {
   // ซ่อน Error banner เดิม
   errorBanner.classList.add('hidden');
 
+  const validationError = validateLoginForm(email, password);
+  if (validationError) {
+    errorMessage.textContent = validationError;
+    errorBanner.classList.remove('hidden');
+    return;
+  }
+
   // ปรับสถานะปุ่มเป็น Loading
   submitBtn.disabled = true;
   btnText.textContent = 'Signing in...';
@@ -99,4 +106,22 @@ async function handleLoginSubmit(event) {
     btnText.textContent = 'Sign In';
     btnSpinner.classList.add('hidden');
   }
+}
+
+function validateLoginForm(email, password) {
+  if (!email){
+    return 'Please enter your email address.';
+  }
+
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailPattern.test(email)) {
+        return 'Invalid email format (e.g., name@example.com)';
+    }
+    if (!password) {
+      return 'Please enter your password.';
+    }
+    if (password.length < 6) {
+      return 'Password must be at least 6 characters long.';
+    }
+    return null;
 }
