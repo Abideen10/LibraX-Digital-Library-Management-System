@@ -4,10 +4,26 @@
 // ============================================
 
 document.addEventListener('DOMContentLoaded', () => {
-  // หากผู้ใช้มี Token ที่ยังไม่หมดอายุอยู่ในระบบแล้ว ให้ Redirect ไปหน้า Dashboard ทันที
-  const existingToken = sessionStorage.getItem('librax_token');
+  // หากผู้ใช้มี Token ที่ยังไม่หมดอายุอยู่ในระบบแล้ว (ทั้งใน localStorage หรือ sessionStorage) ให้ Redirect ไปหน้า Dashboard ทันที
+  const existingToken = getAuthToken();
   if (existingToken) {
     window.location.href = '../index.html';
+  }
+
+  // ดักจับการคลิกกล่อง Demo Credentials เพื่อกรอกข้อมูลให้อัตโนมัติ
+  const demoAdmin = document.getElementById('demoAdmin');
+  const demoStudent = document.getElementById('demoStudent');
+
+  if (demoAdmin) {
+    demoAdmin.addEventListener('click', () => {
+      fillDemoCredentials('admin@librax.com', 'Admin@123');
+    });
+  }
+
+  if (demoStudent) {
+    demoStudent.addEventListener('click', () => {
+      fillDemoCredentials('somchai.w@university.ac.th', 'Student@123');
+    });
   }
 });
 
@@ -66,9 +82,20 @@ async function handleLoginSubmit(event) {
     const result = await apiPost('/auth/login', { email, password });
 
     if (result.success && result.data && result.data.token) {
-      // 1. บันทึก Token และข้อมูล User ลงใน sessionStorage
-      sessionStorage.setItem('librax_token', result.data.token);
-      sessionStorage.setItem('librax_user', JSON.stringify(result.data.user));
+      // 1. ตรวจสอบสถานะ Remember Me แล้วเลือกบันทึกใน localStorage หรือ sessionStorage
+      const rememberMeCheckbox = document.getElementById('rememberMe');
+      const isRememberMe = rememberMeCheckbox ? rememberMeCheckbox.checked : false;
+      const storage = isRememberMe ? localStorage : sessionStorage;
+
+      // ล้าง Token เดิมออกจากทั้งสอง Storage เพื่อป้องกันข้อมูลชนกัน
+      localStorage.removeItem('librax_token');
+      localStorage.removeItem('libr+ax_user');
+      sessionStorage.removeItem('librax_token');
+      sessionStorage.removeItem('librax_user');
+
+      // บันทึก Token และข้อมูล User ลงใน Storage ที่เลือก
+      storage.setItem('librax_token', result.data.token);
+      storage.setItem('librax_user', JSON.stringify(result.data.user));
 
       // 2. แสดง Toast แจ้งเตือนสำเร็จ
       if (typeof showToast === 'function') {
@@ -124,4 +151,20 @@ function validateLoginForm(email, password) {
       return 'Password must be at least 6 characters long.';
     }
     return null;
+}
+
+function fillDemoCredentials(email, password) {
+  const emailInput = document.getElementById('email');
+  const passwordInput = document.getElementById('password');
+  const errorBanner = document.getElementById('loginErrorBanner');
+
+  if (emailInput && passwordInput) {
+    emailInput.value = email;
+    passwordInput.value = password;
+    passwordInput.focus();
+  }
+
+  if (errorBanner) {
+    errorBanner.classList.add('hidden');
+  }
 }

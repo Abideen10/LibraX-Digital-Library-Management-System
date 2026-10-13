@@ -89,6 +89,19 @@
           </div>
         </div>
 
+        <!-- Remember Me Checkbox -->
+        <div class="flex items-center">
+          <label class="flex items-center gap-2 cursor-pointer select-none">
+            <input 
+              type="checkbox" 
+              id="rememberMe" 
+              name="rememberMe" 
+              class="w-4 h-4 rounded border-zinc-300 text-indigo-600 focus:ring-indigo-500 cursor-pointer"
+            >
+            <span class="text-xs text-zinc-600 font-medium">Remember me</span>
+          </label>
+        </div>
+
         <!-- Submit Button -->
         <button 
           type="submit" 
@@ -110,11 +123,11 @@
         Demo Credentials
       </p>
       <div class="space-y-1.5 text-[11px] text-zinc-600 font-mono">
-        <div class="p-2 rounded bg-white border border-zinc-200/80">
+        <div id="demoAdmin" class="p-2 rounded bg-white border border-zinc-200/80 cursor-pointer hover:border-indigo-300 hover:bg-zinc-50 transition-colors">
           <span class="inline-block px-1.5 py-0.5 rounded bg-indigo-50 text-indigo-700 font-sans font-semibold text-[10px] mr-1">Admin</span>
           admin@librax.com - Admin@123
         </div>
-        <div class="p-2 rounded bg-white border border-zinc-200/80">
+        <div id="demoStudent" class="p-2 rounded bg-white border border-zinc-200/80 cursor-pointer hover:border-emerald-300 hover:bg-zinc-50 transition-colors">
           <span class="inline-block px-1.5 py-0.5 rounded bg-emerald-50 text-emerald-700 font-sans font-semibold text-[10px] mr-1">Student</span>
           somchai.w@university.ac.th - Student@123
         </div>
