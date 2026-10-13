@@ -25,6 +25,25 @@ document.addEventListener('DOMContentLoaded', () => {
       fillDemoCredentials('somchai.w@university.ac.th', 'Student@123');
     });
   }
+
+  const emailInput = document.getElementById('email');
+  const passwordInput = document.getElementById('password');
+  const errorBanner = document.getElementById('loginErrorBanner');
+
+  const hideErrorBanner = () => { 
+    if (errorBanner) {
+      errorBanner.classList.add('hidden');
+    }
+  };
+
+  if (emailInput) {
+    emailInput.addEventListener('input', hideErrorBanner);
+  }
+
+  if (passwordInput) {
+    passwordInput.addEventListener('input', hideErrorBanner);
+  }
+
 });
 
 /**
