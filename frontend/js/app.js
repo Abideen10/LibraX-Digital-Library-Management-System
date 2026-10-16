@@ -354,7 +354,8 @@ function logout() {
 function checkAuthRouteGuard() {
   const pathname = window.location.pathname;
   const isLoginPage = pathname.includes('login.html');
-  if (isLoginPage) return;
+  const isRegisterPage = pathname.includes('register.html');
+  if (isLoginPage || isRegisterPage) return;
 
   const token = getAuthToken();
   const user = getCurrentUser();

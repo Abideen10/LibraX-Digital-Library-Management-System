@@ -4,6 +4,7 @@
 // ============================================
 
 const memberQueries = require('../database/queries/memberQueries');
+const authService = require('./authService');
 
 // ดึงสมาชิกทั้งหมด
 async function getAllMembers(search, memberType) {
@@ -20,6 +21,12 @@ async function getMemberById(id) {
 // เพิ่มสมาชิกใหม่
 async function createMember(memberData) {
   validateMemberData(memberData);
+
+  // ถ้า Admin ไม่ได้กำหนด password มา → ใช้ default password แล้ว hash ก่อน insert
+  if (!memberData.password_hash) {
+    memberData.password_hash = await authService.hashPassword('Student@123');
+  }
+
   const memberId = await memberQueries.createMember(memberData);
   return memberId;
 }

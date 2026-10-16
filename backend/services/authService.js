@@ -6,6 +6,7 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const userQueries = require('../database/queries/userQueries');
+const { pool } = require('../database/connection');
 
 const JWT_SECRET = process.env.JWT_SECRET || 'librax_super_secret_jwt_key_2026';
 const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '30m';
@@ -52,6 +53,54 @@ async function login(email, password) {
   };
 }
 
+// สร้าง member_code อัตโนมัติ (เช่น STU-0001, STU-0002)
+async function generateMemberCode() {
+  const [rows] = await pool.execute('SELECT COUNT(*) as total FROM users');
+  const total = rows[0].total;
+  const paddedNumber = String(total + 1).padStart(4, '0');
+  return `STU-${paddedNumber}`;
+}
+
+// Register: สมัครสมาชิกใหม่ (Role = Student เสมอ)
+async function register(userData) {
+  const { first_name, last_name, email, password, phone } = userData;
+
+  // ตรวจสอบว่ากรอกข้อมูลจำเป็นครบหรือไม่
+  if (!first_name || !last_name || !email || !password) {
+    throw new Error('First name, last name, email, and password are required');
+  }
+
+  // ตรวจสอบว่า email นี้มีในระบบอยู่แล้วหรือไม่
+  const existingUser = await userQueries.getUserByEmail(email);
+  if (existingUser) {
+    throw new Error('This email is already registered');
+  }
+
+  // สร้าง member_code และ hash รหัสผ่าน
+  const member_code = await generateMemberCode();
+  const password_hash = await hashPassword(password);
+
+  // บันทึก user ใหม่ลง Database
+  const newUserId = await userQueries.createUser({
+    member_code,
+    first_name,
+    last_name,
+    email,
+    password_hash,
+    phone: phone || null,
+    role: 'Student'
+  });
+
+  return {
+    id: newUserId,
+    member_code,
+    first_name,
+    last_name,
+    email,
+    role: 'Student'
+  };
+}
+
 // Hash รหัสผ่าน (ใช้ตอนสร้าง user ใหม่หรือเปลี่ยนรหัสผ่าน)
 async function hashPassword(plainPassword) {
   const saltRounds = 10;
@@ -69,6 +118,7 @@ function verifyToken(token) {
 
 module.exports = {
   login,
+  register,
   hashPassword,
   verifyToken
 };

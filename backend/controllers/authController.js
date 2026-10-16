@@ -50,7 +50,33 @@ async function getMe(req, res) {
   }
 }
 
+// POST /api/auth/register - สมัครสมาชิกใหม่
+async function register(req, res) {
+  try {
+    const body = await parseBody(req);
+    const { first_name, last_name, email, password, phone } = body;
+
+    const newUser = await authService.register({ first_name, last_name, email, password, phone });
+
+    sendJson(res, 201, {
+      success: true,
+      message: 'Account created successfully',
+      data: newUser
+    });
+  } catch (error) {
+    // แยก error ที่ user ทำผิด (400/409) ออกจาก error ของระบบ (500)
+    const isClientError = error.message.includes('required')
+      || error.message.includes('already registered');
+
+    sendJson(res, isClientError ? (error.message.includes('already registered') ? 409 : 400) : 500, {
+      success: false,
+      message: error.message
+    });
+  }
+}
+
 module.exports = {
   login,
+  register,
   getMe
 };

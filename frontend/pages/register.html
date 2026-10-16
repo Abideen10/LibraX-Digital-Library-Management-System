@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="LibraX - Register for Digital Library Management System">
+  <title>Register | LibraX Digital Library</title>
+  <link rel="icon" type="image/png" href="../assets/images/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body class="bg-[#f8fafc] min-h-screen text-slate-900 flex items-center justify-center p-4">
+
+  <!-- Toast Notification Container -->
+  <div id="toastContainer" class="fixed top-4 right-4 z-50 flex flex-col gap-2"></div>
+
+  <!-- Register Card Container -->
+  <div class="w-full max-w-[460px] py-8">
+    
+    <!-- Brand Header -->
+    <div class="text-center mb-6">
+      <div class="inline-flex items-center justify-center p-2.5 bg-white rounded-2xl border border-zinc-200/80 shadow-sm mb-3">
+        <img src="../assets/images/logo-icon.png" alt="LibraX Logo" class="w-10 h-10 object-contain">
+      </div>
+      <h1 class="text-2xl font-bold text-zinc-900 tracking-tight">Create an account</h1>
+      <p class="text-sm text-zinc-500 mt-1">Join LibraX Digital Library System</p>
+    </div>
+
+    <!-- Register Form Card -->
+    <div class="bg-white rounded-2xl border border-zinc-200/80 p-7 shadow-xs">
+      
+      <!-- Error Message Banner -->
+      <div id="registerErrorBanner" class="hidden mb-4 p-3 rounded-lg bg-rose-50 border border-rose-200 text-rose-700 text-xs font-medium">
+        <div class="flex items-center gap-2">
+          <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+          </svg>
+          <span id="registerErrorMessage">Please fix the errors below</span>
+        </div>
+      </div>
+
+      <form id="registerForm" onsubmit="handleRegisterSubmit(event)" class="space-y-4">
+        
+        <!-- First Name & Last Name (2 Columns) -->
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label for="firstName" class="form-label">First Name</label>
+            <input 
+              type="text" 
+              id="firstName" 
+              name="firstName" 
+              required 
+              placeholder="Somchai" 
+              class="form-input text-sm"
+            >
+          </div>
+          <div>
+            <label for="lastName" class="form-label">Last Name</label>
+            <input 
+              type="text" 
+              id="lastName" 
+              name="lastName" 
+              required 
+              placeholder="Wongsuwan" 
+              class="form-input text-sm"
+            >
+          </div>
+        </div>
+
+        <!-- Email Input -->
+        <div>
+          <label for="email" class="form-label">Email Address</label>
+          <input 
+            type="email" 
+            id="email" 
+            name="email" 
+            required 
+            autocomplete="email"
+            placeholder="somchai@example.com" 
+            class="form-input text-sm"
+          >
+        </div>
+
+        <!-- Phone Input (Optional) -->
+        <div>
+          <label for="phone" class="form-label">Phone Number <span class="text-zinc-400 font-normal text-xs">(Optional)</span></label>
+          <input 
+            type="tel" 
+            id="phone" 
+            name="phone" 
+            placeholder="081-234-5678" 
+            class="form-input text-sm"
+          >
+        </div>
+
+        <!-- Password Input -->
+        <div>
+          <label for="password" class="form-label">Password</label>
+          <div class="relative">
+            <input 
+              type="password" 
+              id="password" 
+              name="password" 
+              required 
+              autocomplete="new-password"
+              placeholder="At least 6 characters" 
+              class="form-input pr-10 text-sm"
+            >
+            <button 
+              type="button" 
+              onclick="togglePasswordVisibility('password', 'eyeIcon1')" 
+              class="absolute inset-y-0 right-0 pr-3 flex items-center text-zinc-400 hover:text-zinc-600"
+              title="Toggle password visibility"
+            >
+              <svg id="eyeIcon1" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Confirm Password Input -->
+        <div>
+          <label for="confirmPassword" class="form-label">Confirm Password</label>
+          <div class="relative">
+            <input 
+              type="password" 
+              id="confirmPassword" 
+              name="confirmPassword" 
+              required 
+              autocomplete="new-password"
+              placeholder="Re-enter password" 
+              class="form-input pr-10 text-sm"
+            >
+            <button 
+              type="button" 
+              onclick="togglePasswordVisibility('confirmPassword', 'eyeIcon2')" 
+              class="absolute inset-y-0 right-0 pr-3 flex items-center text-zinc-400 hover:text-zinc-600"
+              title="Toggle password visibility"
+            >
+              <svg id="eyeIcon2" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Submit Button -->
+        <button 
+          type="submit" 
+          id="registerSubmitBtn" 
+          class="w-full btn btn-primary flex items-center justify-center gap-2 py-2.5 text-sm font-semibold rounded-lg mt-4 transition-all"
+        >
+          <span id="btnText">Create Account</span>
+          <div id="btnSpinner" class="hidden spinner w-4 h-4 border-2 border-white/30 border-t-white"></div>
+        </button>
+      </form>
+
+      <!-- Sign In Link -->
+      <div class="mt-6 text-center text-xs text-zinc-500">
+        Already have an account? 
+        <a href="./login.html" class="font-semibold text-indigo-600 hover:text-indigo-500 hover:underline">
+          Sign in
+        </a>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="../js/app.js"></script>
+  <script src="../js/register.js"></script>
+</body>
+</html>

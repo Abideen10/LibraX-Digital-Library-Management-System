@@ -10,6 +10,11 @@ const { verifyAuth } = require('../utils/authMiddleware');
  * จัดการ Route สำหรับ /api/auth
  */
 function handleAuthRoutes(req, res, pathname, method) {
+  // POST /api/auth/register - สมัครสมาชิกใหม่ (ไม่ต้องใช้ Token)
+  if (pathname === '/api/auth/register' && method === 'POST') {
+    return authController.register(req, res);
+  }
+
   // POST /api/auth/login - เข้าสู่ระบบ (ไม่ต้องใช้ Token)
   if (pathname === '/api/auth/login' && method === 'POST') {
     return authController.login(req, res);
