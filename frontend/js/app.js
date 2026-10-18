@@ -233,7 +233,9 @@ function getStatusBadge(status) {
     'Borrowed': 'badge-borrowed',
     'Overdue': 'badge-overdue',
     'Returned': 'badge-returned',
-    'Out of Stock': 'badge-out-of-stock'
+    'Out of Stock': 'badge-out-of-stock',
+    'Pending': 'badge-pending',
+    'Rejected': 'badge-rejected'
   };
   const badgeClass = statusMap[status] || 'badge-available';
   return `<span class="badge ${badgeClass}"><span class="badge-dot"></span>${status}</span>`;

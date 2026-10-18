@@ -84,10 +84,67 @@ async function getDashboard(req, res) {
   }
 }
 
+// POST /api/borrowings/request (Student, Staff ส่งคำขอยืมของตัวเอง)
+async function requestBorrowing(req, res) {
+  try {
+    const body = await parseBody(req);
+    const userId = req.user.id;
+    const borrowingId = await borrowingService.createBorrowRequest({ ...body, userId });
+    sendJson(res, 201, {
+      success: true,
+      data: { id: borrowingId },
+      message: 'Borrow request submitted successfully. Waiting for admin approval.'
+    });
+  } catch (error) {
+    const statusCode = error.message.includes('required') || error.message.includes('limit')
+      || error.message.includes('not found') || error.message.includes('out of stock') ? 400 : 500;
+    sendJson(res, statusCode, { success: false, message: error.message });
+  }
+}
+
+// GET /api/borrowings/my (ดึงรายการยืมของ User ที่กำลัง Login อยู่)
+async function getMyBorrowings(req, res) {
+  try {
+    const userId = req.user.id;
+    const borrowings = await borrowingService.getMyBorrowings(userId);
+    sendJson(res, 200, { success: true, data: borrowings });
+  } catch (error) {
+    sendJson(res, 500, { success: false, message: error.message });
+  }
+}
+
+// PUT /api/borrowings/:id/approve (Admin อนุมัติคำขอยืม)
+async function approveBorrowing(req, res, id) {
+  try {
+    await borrowingService.approveBorrowing(id);
+    sendJson(res, 200, { success: true, message: 'Borrowing request approved successfully' });
+  } catch (error) {
+    const statusCode = error.message.includes('not found') ? 404
+      : (error.message.includes('status') || error.message.includes('out of stock') || error.message.includes('available')) ? 400 : 500;
+    sendJson(res, statusCode, { success: false, message: error.message });
+  }
+}
+
+// PUT /api/borrowings/:id/reject (Admin ปฏิเสธคำขอยืม)
+async function rejectBorrowing(req, res, id) {
+  try {
+    const body = await parseBody(req).catch(() => ({}));
+    await borrowingService.rejectBorrowing(id, body.reason || '');
+    sendJson(res, 200, { success: true, message: 'Borrowing request rejected successfully' });
+  } catch (error) {
+    const statusCode = error.message.includes('not found') ? 404 : 400;
+    sendJson(res, statusCode, { success: false, message: error.message });
+  }
+}
+
 module.exports = {
   getBorrowings,
   getBorrowingById,
   createBorrowing,
   returnBorrowing,
-  getDashboard
+  getDashboard,
+  requestBorrowing,
+  getMyBorrowings,
+  approveBorrowing,
+  rejectBorrowing
 };

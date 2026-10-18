@@ -70,7 +70,7 @@ CREATE TABLE IF NOT EXISTS borrowings (
   user_id INT NOT NULL,
   borrow_date DATE NOT NULL,
   due_date DATE NOT NULL,
-  status ENUM('Borrowed', 'Returned', 'Overdue') NOT NULL DEFAULT 'Borrowed',
+  status ENUM('Pending', 'Borrowed', 'Returned', 'Overdue', 'Rejected') NOT NULL DEFAULT 'Pending',
   notes TEXT DEFAULT NULL,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -97,7 +97,7 @@ CREATE TABLE IF NOT EXISTS borrowing_items (
   borrowing_id INT NOT NULL,
   book_id INT NOT NULL,
   return_date DATE DEFAULT NULL,
-  status ENUM('Borrowed', 'Returned', 'Overdue') NOT NULL DEFAULT 'Borrowed',
+  status ENUM('Pending', 'Borrowed', 'Returned', 'Overdue', 'Rejected') NOT NULL DEFAULT 'Pending',
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 

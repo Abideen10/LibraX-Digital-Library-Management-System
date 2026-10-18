@@ -5,9 +5,103 @@
 
 // === Initialize ===
 document.addEventListener('DOMContentLoaded', () => {
+  loadPendingRequests();
   loadActiveBorrowings();
   setDefaultDates();
 });
+
+// === Load Pending Borrow Requests ===
+
+async function loadPendingRequests() {
+  const result = await apiGet('/borrowings?status=Pending');
+  const countBadge = document.getElementById('pendingCountBadge');
+
+  if (result.success) {
+    if (countBadge) countBadge.textContent = result.data.length;
+    renderPendingRequests(result.data);
+  } else {
+    if (countBadge) countBadge.textContent = '0';
+    renderPendingRequests([]);
+  }
+}
+
+function renderPendingRequests(requests) {
+  const container = document.getElementById('pendingRequestsContainer');
+  if (!container) return;
+
+  if (requests.length === 0) {
+    container.innerHTML = '<div class="empty-state py-8"><p class="text-xs text-zinc-400">No pending borrow requests awaiting approval</p></div>';
+    return;
+  }
+
+  container.innerHTML = `
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Requester</th>
+          <th>Borrow Date</th>
+          <th>Due Date</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${requests.map(r => `
+          <tr>
+            <td class="font-mono text-xs text-zinc-500">#${r.id}</td>
+            <td>
+              <div class="font-medium text-xs text-zinc-900">${r.first_name} ${r.last_name}</div>
+              <div class="text-[11px] font-mono text-zinc-400">${r.member_code} · <span class="capitalize">${r.member_type || r.role}</span></div>
+            </td>
+            <td class="text-xs text-zinc-600">${formatDate(r.borrow_date)}</td>
+            <td class="text-xs text-zinc-600">${formatDate(r.due_date)}</td>
+            <td>${getStatusBadge(r.status)}</td>
+            <td>
+              <div class="flex gap-1.5 items-center">
+                <button class="btn btn-secondary btn-sm" onclick="viewBorrowDetail(${r.id})" title="View Details">
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                </button>
+                <button class="btn btn-success btn-sm gap-1" onclick="approveBorrowingRequest(${r.id})" title="Approve Request">
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                  Approve
+                </button>
+                <button class="btn btn-danger btn-sm gap-1" onclick="rejectBorrowingRequest(${r.id})" title="Reject Request">
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                  Reject
+                </button>
+              </div>
+            </td>
+          </tr>
+        `).join('')}
+      </tbody>
+    </table>
+  `;
+}
+
+async function approveBorrowingRequest(id) {
+  if (!confirmAction('Are you sure you want to approve this borrow request? Books will be deducted from inventory.')) return;
+  const result = await apiPut(`/borrowings/${id}/approve`, {});
+  if (result.success) {
+    showToast(result.message || 'Request approved successfully', 'success');
+    await loadPendingRequests();
+    await loadActiveBorrowings();
+  } else {
+    showToast(result.message || 'Failed to approve request', 'error');
+  }
+}
+
+async function rejectBorrowingRequest(id) {
+  const reason = prompt('Please enter rejection reason (optional):');
+  if (reason === null) return; // User cancelled prompt
+  const result = await apiPut(`/borrowings/${id}/reject`, { reason });
+  if (result.success) {
+    showToast(result.message || 'Request rejected', 'success');
+    await loadPendingRequests();
+  } else {
+    showToast(result.message || 'Failed to reject request', 'error');
+  }
+}
 
 // === Load Active Borrowings ===
 

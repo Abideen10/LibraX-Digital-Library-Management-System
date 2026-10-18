@@ -32,6 +32,30 @@ function handleBorrowingsRoutes(req, res, pathname, method) {
     return verifyRole(['Admin', 'Staff'])(req, res, () => borrowingsController.returnBorrowing(req, res, borrowingId));
   }
 
+  // GET /api/borrowings/my - ดึงรายการยืมของตัวเอง (ทุก Role ที่ Login แล้ว)
+  if (pathname === '/api/borrowings/my' && method === 'GET') {
+    return borrowingsController.getMyBorrowings(req, res);
+  }
+
+  // POST /api/borrowings/request - ยื่นคำขอยืมหนังสือของตัวเอง (ทุก Role ทำได้)
+  if (pathname === '/api/borrowings/request' && method === 'POST') {
+    return borrowingsController.requestBorrowing(req, res);
+  }
+
+  // PUT /api/borrowings/:id/approve - อนุมัติคำขอยืม (เฉพาะ Admin)
+  const approveMatch = pathname.match(/^\/api\/borrowings\/(\d+)\/approve$/);
+  if (approveMatch && method === 'PUT') {
+    const borrowingId = parseInt(approveMatch[1], 10);
+    return verifyRole(['Admin'])(req, res, () => borrowingsController.approveBorrowing(req, res, borrowingId));
+  }
+
+  // PUT /api/borrowings/:id/reject - ปฏิเสธคำขอยืม (เฉพาะ Admin)
+  const rejectMatch = pathname.match(/^\/api\/borrowings\/(\d+)\/reject$/);
+  if (rejectMatch && method === 'PUT') {
+    const borrowingId = parseInt(rejectMatch[1], 10);
+    return verifyRole(['Admin'])(req, res, () => borrowingsController.rejectBorrowing(req, res, borrowingId));
+  }
+
   // ตรวจสอบ Pattern: /api/borrowings/:id (เฉพาะ Admin, Staff)
   const borrowingIdMatch = pathname.match(/^\/api\/borrowings\/(\d+)$/);
   if (borrowingIdMatch && method === 'GET') {

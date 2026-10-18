@@ -154,6 +154,7 @@ async function getBorrowingStats() {
   const [rows] = await pool.execute(`
     SELECT
       COUNT(*) as total_borrowings,
+      SUM(CASE WHEN status = 'Pending' THEN 1 ELSE 0 END) as pending_borrowings,
       SUM(CASE WHEN status = 'Borrowed' THEN 1 ELSE 0 END) as active_borrowings,
       SUM(CASE WHEN status = 'Overdue' THEN 1 ELSE 0 END) as overdue_borrowings,
       SUM(CASE WHEN status = 'Returned' THEN 1 ELSE 0 END) as returned_borrowings
@@ -186,6 +187,173 @@ async function getBorrowingsByMemberId(memberId) {
   return rows;
 }
 
+// สร้างคำขอยืมหนังสือ (สถานะ Pending ยังไม่ตัดสต็อกหนังสือ)
+async function createBorrowRequest(userId, borrowDate, dueDate, bookIds, notes = null) {
+  const connection = await pool.getConnection();
+
+  try {
+    await connection.beginTransaction();
+
+    const [borrowResult] = await connection.execute(
+      'INSERT INTO borrowings (user_id, borrow_date, due_date, status, notes) VALUES (?, ?, ?, ?, ?)',
+      [userId, borrowDate, dueDate, 'Pending', notes]
+    );
+    const borrowingId = borrowResult.insertId;
+
+    for (const bookId of bookIds) {
+      await connection.execute(
+        'INSERT INTO borrowing_items (borrowing_id, book_id, status) VALUES (?, ?, ?)',
+        [borrowingId, bookId, 'Pending']
+      );
+    }
+
+    await connection.commit();
+    return borrowingId;
+  } catch (error) {
+    await connection.rollback();
+    throw error;
+  } finally {
+    connection.release();
+  }
+}
+
+// อนุมัติคำขอยืม (เปลี่ยนสถานะเป็น Borrowed และตัดสต็อกหนังสือ)
+async function approveBorrowing(borrowingId) {
+  const connection = await pool.getConnection();
+
+  try {
+    await connection.beginTransaction();
+
+    const [borrowingRows] = await connection.execute(
+      'SELECT * FROM borrowings WHERE id = ?',
+      [borrowingId]
+    );
+
+    if (borrowingRows.length === 0) {
+      throw new Error('Borrowing record not found');
+    }
+
+    if (borrowingRows[0].status !== 'Pending') {
+      throw new Error(`Cannot approve borrowing with status: ${borrowingRows[0].status}`);
+    }
+
+    const [items] = await connection.execute(
+      'SELECT bi.*, bk.title, bk.available_quantity FROM borrowing_items bi JOIN books bk ON bi.book_id = bk.id WHERE bi.borrowing_id = ?',
+      [borrowingId]
+    );
+
+    for (const item of items) {
+      if (item.available_quantity <= 0) {
+        throw new Error(`Book "${item.title}" is out of stock`);
+      }
+
+      const [updateResult] = await connection.execute(
+        'UPDATE books SET available_quantity = available_quantity - 1 WHERE id = ? AND available_quantity > 0',
+        [item.book_id]
+      );
+
+      if (updateResult.affectedRows === 0) {
+        throw new Error(`Book "${item.title}" is no longer available`);
+      }
+
+      await connection.execute(
+        "UPDATE borrowing_items SET status = 'Borrowed' WHERE id = ?",
+        [item.id]
+      );
+    }
+
+    await connection.execute(
+      "UPDATE borrowings SET status = 'Borrowed' WHERE id = ?",
+      [borrowingId]
+    );
+
+    await connection.commit();
+    return true;
+  } catch (error) {
+    await connection.rollback();
+    throw error;
+  } finally {
+    connection.release();
+  }
+}
+
+// ปฏิเสธคำขอยืม
+async function rejectBorrowing(borrowingId, reason = '') {
+  const connection = await pool.getConnection();
+
+  try {
+    await connection.beginTransaction();
+
+    const [borrowingRows] = await connection.execute(
+      'SELECT * FROM borrowings WHERE id = ?',
+      [borrowingId]
+    );
+
+    if (borrowingRows.length === 0) {
+      throw new Error('Borrowing record not found');
+    }
+
+    if (borrowingRows[0].status !== 'Pending') {
+      throw new Error(`Cannot reject borrowing with status: ${borrowingRows[0].status}`);
+    }
+
+    const currentNotes = borrowingRows[0].notes || '';
+    const updatedNotes = reason ? (currentNotes ? `${currentNotes} | Reject reason: ${reason}` : `Reject reason: ${reason}`) : currentNotes;
+
+    await connection.execute(
+      "UPDATE borrowings SET status = 'Rejected', notes = ? WHERE id = ?",
+      [updatedNotes, borrowingId]
+    );
+
+    await connection.execute(
+      "UPDATE borrowing_items SET status = 'Rejected' WHERE borrowing_id = ?",
+      [borrowingId]
+    );
+
+    await connection.commit();
+    return true;
+  } catch (error) {
+    await connection.rollback();
+    throw error;
+  } finally {
+    connection.release();
+  }
+}
+
+// ดึงรายการยืมทั้งหมดของ User คนนั้น พร้อมรายการหนังสือ
+async function getMyBorrowings(userId) {
+  const [borrowings] = await pool.execute(`
+    SELECT b.*
+    FROM borrowings b
+    WHERE b.user_id = ?
+    ORDER BY b.created_at DESC
+  `, [userId]);
+
+  if (borrowings.length === 0) return [];
+
+  const borrowingIds = borrowings.map(b => b.id);
+  const placeholders = borrowingIds.map(() => '?').join(',');
+  const [items] = await pool.execute(`
+    SELECT bi.*, bk.title, bk.isbn, bk.author
+    FROM borrowing_items bi
+    JOIN books bk ON bi.book_id = bk.id
+    WHERE bi.borrowing_id IN (${placeholders})
+  `, borrowingIds);
+
+  const itemsByBorrowingId = {};
+  for (const item of items) {
+    if (!itemsByBorrowingId[item.borrowing_id]) {
+      itemsByBorrowingId[item.borrowing_id] = [];
+    }
+    itemsByBorrowingId[item.borrowing_id].push(item);
+  }
+
+  return borrowings.map(b => ({
+    ...b,
+    items: itemsByBorrowingId[b.id] || []
+  }));
+}
+
 module.exports = {
   getAllBorrowings,
   getBorrowingById,
@@ -193,5 +361,9 @@ module.exports = {
   returnBorrowing,
   getBorrowingStats,
   getRecentBorrowings,
-  getBorrowingsByMemberId
+  getBorrowingsByMemberId,
+  createBorrowRequest,
+  approveBorrowing,
+  rejectBorrowing,
+  getMyBorrowings
 };

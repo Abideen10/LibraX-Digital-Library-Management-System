@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node backend/server.js",
     "dev": "node --watch backend/server.js",
-    "seed": "node backend/database/seed.js"
+    "seed": "node backend/database/seed.js",
+    "migrate": "node backend/database/migrate.js"
   },
   "keywords": [
     "library",
